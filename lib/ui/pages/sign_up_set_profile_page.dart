@@ -14,8 +14,11 @@ class SignUpSetProfilePage extends StatefulWidget {
 
   const SignUpSetProfilePage({
     Key? key,
+    this.name,
     required this.data,
   }) : super(key: key);
+
+  final dynamic name;
 
   @override
   State<SignUpSetProfilePage> createState() => _SignUpSetProfilePageState();
@@ -46,23 +49,24 @@ class _SignUpSetProfilePageState extends State<SignUpSetProfilePage> {
           horizontal: 24,
         ),
         children: [
-          Container(
-            width: 155,
-            height: 50,
-            margin: const EdgeInsets.only(
-              top: 100,
-              bottom: 100,
-            ),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/img_logo_light.png',
-                ),
-              ),
-            ),
-          ),
+          // Container(
+          //   width: 155,
+          //   height: 50,
+          //   margin: const EdgeInsets.only(
+          //     top: 100,
+          //     bottom: 100,
+          //   ),
+          //   decoration: const BoxDecoration(
+          //     image: DecorationImage(
+          //       image: AssetImage(
+          //         'assets/img_logo_light.png',
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          SizedBox(height: 160),
           Text(
-            'Join Us to Unlock\nYour Growth',
+            'Ayo bergabung\nbersama kami',
             style: blackTextStyle.copyWith(
               fontSize: 20,
               fontWeight: semiBold,
@@ -114,7 +118,7 @@ class _SignUpSetProfilePageState extends State<SignUpSetProfilePage> {
                   height: 16,
                 ),
                 Text(
-                  'Shayna Hanna',
+                  widget.name.toString(),
                   style: blackTextStyle.copyWith(
                     fontSize: 18,
                     fontWeight: medium,
@@ -124,7 +128,7 @@ class _SignUpSetProfilePageState extends State<SignUpSetProfilePage> {
                   height: 30,
                 ),
                 CustomFormField(
-                  title: 'Set PIN (6 digit number)',
+                  title: 'Atur PIN (6 angka)',
                   obscureText: true,
                   controller: pinController,
                   keyboardType: TextInputType.number,
@@ -133,7 +137,7 @@ class _SignUpSetProfilePageState extends State<SignUpSetProfilePage> {
                   height: 30,
                 ),
                 CustomFilledButton(
-                  title: 'Continue',
+                  title: 'Lanjut',
                   onPressed: () {
                     if (pinController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(

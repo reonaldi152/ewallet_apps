@@ -21,7 +21,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final passwordController = TextEditingController(text: '');
 
   bool validate() {
-    print(nameController.text);
+    // print(nameController.text);
 
     if (nameController.text.isEmpty ||
         emailController.text.isEmpty ||
@@ -46,6 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
               context,
               MaterialPageRoute(
                 builder: (context) => SignUpSetProfilePage(
+                  name: nameController.text,
                   data: SignUpFormModel(
                     name: nameController.text,
                     email: emailController.text,
@@ -68,23 +69,26 @@ class _SignUpPageState extends State<SignUpPage> {
               horizontal: 24,
             ),
             children: [
-              Container(
-                width: 155,
-                height: 50,
-                margin: const EdgeInsets.only(
-                  top: 100,
-                  bottom: 100,
-                ),
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      'assets/img_logo_light.png',
-                    ),
-                  ),
-                ),
+              // Container(
+              //   width: 155,
+              //   height: 50,
+              //   margin: const EdgeInsets.only(
+              //     top: 100,
+              //     bottom: 100,
+              //   ),
+              //   decoration: const BoxDecoration(
+              //     image: DecorationImage(
+              //       image: AssetImage(
+              //         'assets/img_logo_light.png',
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              const SizedBox(
+                height: 120,
               ),
               Text(
-                'Join Us to Unlock\nYour Growth',
+                'Ayo bergabung\nbersama kami',
                 style: blackTextStyle.copyWith(
                   fontSize: 20,
                   fontWeight: semiBold,
@@ -104,7 +108,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [
                     // NOTE: NAME INPUT
                     CustomFormField(
-                      title: 'Full Name',
+                      title: 'Nama lengkap',
                       controller: nameController,
                     ),
                     const SizedBox(
@@ -112,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     // NOTE: EMAIL INPUT
                     CustomFormField(
-                      title: 'Email Address',
+                      title: 'Email',
                       controller: emailController,
                     ),
                     const SizedBox(
@@ -129,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 30,
                     ),
                     CustomFilledButton(
-                      title: 'Continue',
+                      title: 'Lanjut',
                       onPressed: () {
                         if (validate()) {
                           context
@@ -148,7 +152,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 50,
               ),
               CustomTextButton(
-                title: 'Sign In',
+                title: 'Masuk',
                 onPressed: () {
                   Navigator.pushNamed(context, '/sign-in');
                 },

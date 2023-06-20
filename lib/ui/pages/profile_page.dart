@@ -16,7 +16,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'My Profile',
+          'Profil Saya',
         ),
       ),
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -101,7 +101,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       ProfileMenuItem(
                         iconUrl: 'assets/ic_edit_profile.png',
-                        title: 'Edit Profile',
+                        title: 'Edit Profil',
                         onTap: () async {
                           if (await Navigator.pushNamed(context, '/pin') ==
                               true) {
@@ -118,7 +118,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       ProfileMenuItem(
                         iconUrl: 'assets/ic_pin.png',
-                        title: 'My Pin',
+                        title: 'Pin Saya',
                         onTap: () async {
                           if (await Navigator.pushNamed(context, '/pin') ==
                               true) {
@@ -133,21 +133,21 @@ class ProfilePage extends StatelessWidget {
                           }
                         },
                       ),
-                      ProfileMenuItem(
-                        iconUrl: 'assets/ic_wallet.png',
-                        title: 'Wallet Settings',
-                        onTap: () {},
-                      ),
-                      ProfileMenuItem(
-                        iconUrl: 'assets/ic_reward.png',
-                        title: 'My Rewards',
-                        onTap: () {},
-                      ),
-                      ProfileMenuItem(
-                        iconUrl: 'assets/ic_help.png',
-                        title: 'Help Center',
-                        onTap: () {},
-                      ),
+                      // ProfileMenuItem(
+                      //   iconUrl: 'assets/ic_wallet.png',
+                      //   title: 'Wallet Settings',
+                      //   onTap: () {},
+                      // ),
+                      // ProfileMenuItem(
+                      //   iconUrl: 'assets/ic_reward.png',
+                      //   title: 'My Rewards',
+                      //   onTap: () {},
+                      // ),
+                      // ProfileMenuItem(
+                      //   iconUrl: 'assets/ic_help.png',
+                      //   title: 'Help Center',
+                      //   onTap: () {},
+                      // ),
                       ProfileMenuItem(
                         iconUrl: 'assets/ic_logout.png',
                         title: 'Log Out',
@@ -161,10 +161,10 @@ class ProfilePage extends StatelessWidget {
                 const SizedBox(
                   height: 87,
                 ),
-                CustomTextButton(
-                  title: 'Report a Problem',
-                  onPressed: () {},
-                ),
+                // CustomTextButton(
+                //   title: 'Report a Problem',
+                //   onPressed: () {},
+                // ),
                 const SizedBox(
                   height: 50,
                 ),

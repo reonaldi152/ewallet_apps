@@ -15,15 +15,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
   CarouselController controller = CarouselController();
 
   List<String> titles = [
-    'Grow Your\nFinancial Today',
-    'Build From\nZero to Freedom',
-    'Start Together',
+    'Dompet Elektronik',
+    'Penukaran uang 24/7',
+    'Ayo Mulai',
   ];
 
   List<String> subtitles = [
-    'Our system is helping you to\nachieve a better goal',
-    'We provide tips for you so that\nyou can adapt easier',
-    'We will guide you to where\nyou wanted it too',
+    'Memberikan kemudahan akses uang dimanapun dan kapanpun',
+    'Nikmati penukaran uang dengan mudah kapan saja tanpa rasa takut',
+    'Mulai dengan MimoPay Dompet Elektronik',
   ];
 
   @override
@@ -36,15 +36,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
             CarouselSlider(
               items: [
                 Image.asset(
-                  'assets/img_onboarding1.png',
+                  'assets/ewallet1.png',
                   height: 331,
                 ),
                 Image.asset(
-                  'assets/img_onboarding2.png',
+                  'assets/ewallet2.png',
                   height: 331,
                 ),
                 Image.asset(
-                  'assets/img_onboarding3.png',
+                  'assets/ewallet1.png',
                   height: 331,
                 ),
               ],
@@ -102,7 +102,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ? Column(
                           children: [
                             CustomFilledButton(
-                              title: 'Get Started',
+                              title: 'Mulai Daftar',
                               onPressed: () {
                                 Navigator.pushNamedAndRemoveUntil(
                                     context, '/sign-up', (route) => false);
@@ -112,7 +112,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               height: 20,
                             ),
                             CustomTextButton(
-                              title: 'Sign In',
+                              title: 'Masuk',
                               onPressed: () {
                                 Navigator.pushNamedAndRemoveUntil(
                                     context, '/sign-in', (route) => false);
@@ -163,10 +163,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             ),
                             const Spacer(),
                             CustomFilledButton(
-                              title: 'Continue',
+                              title: 'Lanjut',
                               width: 150,
                               onPressed: () {
                                 controller.nextPage();
+                                print("lanjut");
                               },
                             ),
                           ],

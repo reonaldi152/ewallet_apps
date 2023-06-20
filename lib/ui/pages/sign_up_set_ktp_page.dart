@@ -44,23 +44,24 @@ class _SignUpSetKtpPageState extends State<SignUpSetKtpPage> {
           horizontal: 24,
         ),
         children: [
-          Container(
-            width: 155,
-            height: 50,
-            margin: const EdgeInsets.only(
-              top: 100,
-              bottom: 100,
-            ),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/img_logo_light.png',
-                ),
-              ),
-            ),
-          ),
+          // Container(
+          //   width: 155,
+          //   height: 50,
+          //   margin: const EdgeInsets.only(
+          //     top: 100,
+          //     bottom: 100,
+          //   ),
+          //   decoration: const BoxDecoration(
+          //     image: DecorationImage(
+          //       image: AssetImage(
+          //         'assets/img_logo_light.png',
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          SizedBox(height: 170),
           Text(
-            'Verify Your\nAccount',
+            'Verifikasi Akun\nanda',
             style: blackTextStyle.copyWith(
               fontSize: 20,
               fontWeight: semiBold,
@@ -112,7 +113,7 @@ class _SignUpSetKtpPageState extends State<SignUpSetKtpPage> {
                   height: 16,
                 ),
                 Text(
-                  'Passport/ID Card',
+                  'KTP',
                   style: blackTextStyle.copyWith(
                     fontSize: 18,
                     fontWeight: medium,
@@ -122,7 +123,7 @@ class _SignUpSetKtpPageState extends State<SignUpSetKtpPage> {
                   height: 50,
                 ),
                 CustomFilledButton(
-                  title: 'Continue',
+                  title: 'Lanjut',
                   onPressed: () {
                     if (selectedImage == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -153,11 +154,11 @@ class _SignUpSetKtpPageState extends State<SignUpSetKtpPage> {
             height: 60,
           ),
           CustomTextButton(
-            title: 'Skip for Now',
+            title: 'Lewati untuk saat ini',
             onPressed: () {
-              // context.read<AuthBloc>().add(
-              //       AuthRegister(widget.data),
-              //     );
+              context.read<AuthBloc>().add(
+                    AuthRegister(widget.data),
+                  );
               Navigator.pushNamed(context, '/sign-up-success');
             },
           ),

@@ -23,7 +23,8 @@ class SplashPage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: darkBackgroundColor,
+        // backgroundColor: darkBackgroundColor,
+        backgroundColor: Colors.black,
         body: Center(
           child: Container(
             width: 155,
@@ -31,7 +32,7 @@ class SplashPage extends StatelessWidget {
             decoration: const BoxDecoration(
                 image: DecorationImage(
               image: AssetImage(
-                'assets/img_logo_dark.png',
+                'assets/logo_mimopay_light.png',
               ),
             )),
           ),

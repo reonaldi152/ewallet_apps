@@ -35,7 +35,7 @@ class ProfileEditSuccessPage extends StatelessWidget {
             ),
             CustomFilledButton(
               width: 183,
-              title: 'My Profile',
+              title: 'Profil Saya',
               onPressed: () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/home', (route) => false);

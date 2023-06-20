@@ -3,8 +3,8 @@ class SignUpFormModel {
   final String? email;
   final String? password;
   final String? pin;
-  final String? profilePicture;
-  final String? ktp;
+  final dynamic profilePicture;
+  final dynamic ktp;
 
   SignUpFormModel({
     this.name,
@@ -31,8 +31,8 @@ class SignUpFormModel {
     // String? email,
     // String? password,
     String? pin,
-    String? profilePicture,
-    String? ktp,
+    dynamic profilePicture,
+    dynamic ktp,
   }) =>
       SignUpFormModel(
         name: name,

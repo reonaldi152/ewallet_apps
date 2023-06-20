@@ -143,7 +143,7 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Howdy,',
+                      'Selamat Datang',
                       style: greyTextStyle.copyWith(
                         fontSize: 16,
                       ),
@@ -322,7 +322,7 @@ class HomePage extends StatelessWidget {
                   height: 21,
                 ),
                 Text(
-                  'Balance',
+                  'Saldo',
                   style: whiteTextStyle,
                 ),
                 Text(
@@ -458,7 +458,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Do Something',
+            'Fitur',
             style: blackTextStyle.copyWith(
               fontSize: 16,
               fontWeight: semiBold,
@@ -479,14 +479,14 @@ class HomePage extends StatelessWidget {
               ),
               HomeServiceItem(
                 iconUrl: 'assets/ic_send.png',
-                title: 'Send',
+                title: 'Transfer',
                 onTap: () {
                   Navigator.pushNamed(context, '/transfer');
                 },
               ),
               HomeServiceItem(
                 iconUrl: 'assets/exchange-rate.png',
-                title: 'Money Changer',
+                title: 'Penukaran Uang',
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => MoneyChanger()),
@@ -518,7 +518,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Latest Transactions',
+            'Transaksi terakhir',
             style: blackTextStyle.copyWith(
               fontSize: 16,
               fontWeight: semiBold,
@@ -601,7 +601,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Send Again',
+            'Kirim lagi',
             style: blackTextStyle.copyWith(
               fontSize: 16,
               fontWeight: semiBold,
@@ -683,7 +683,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Friendly Tips',
+            'Tips',
             style: blackTextStyle.copyWith(
               fontSize: 16,
               fontWeight: semiBold,

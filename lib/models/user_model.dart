@@ -6,8 +6,8 @@ class UserModel {
   String? password;
   String? emailVerifiedAt;
   int? verified;
-  String? profilePicture;
-  String? ktp;
+  dynamic profilePicture;
+  dynamic ktp;
   String? createdAt;
   String? updatedAt;
   int? balance;

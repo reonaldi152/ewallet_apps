@@ -31,21 +31,36 @@ class AuthService {
   }
 
   Future<UserModel> register(SignUpFormModel data) async {
+    print("ini register");
     try {
+      print("masuk try register");
       print(data.toJson());
       final res = await http.post(
         Uri.parse(
           '$baseUrl/register',
         ),
-        body: data.toJson(),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(data.toJson()),
+        // body: json.encode({
+        //   'name': 'mamang',
+        //   'email': 'mamang@gmail.com',
+        //   'password': 'mamang123',
+        //   'pin': '123456'
+        //   'profile_picture': null,
+        //   'ktp': null
+        // }),
       );
 
       if (res.statusCode == 200 || res.statusCode == 201) {
+        print("masuk code 200/201");
         final user = UserModel.fromJson(jsonDecode(res.body));
         user.password = data.password;
 
+        print("ini user register : $user");
         await storeCredentialToLocal(user);
-
+        print("registerrr");
         return user;
       } else {
         throw jsonDecode(res.body)['message'];
@@ -57,7 +72,9 @@ class AuthService {
   }
 
   Future<UserModel> login(SignInFormModel data) async {
+    print("ini login");
     try {
+      print("masuk try login");
       final res = await http.post(
         Uri.parse(
           '$baseUrl/login',
@@ -68,8 +85,10 @@ class AuthService {
       print(res.body);
 
       if (res.statusCode == 200 || res.statusCode == 201) {
+        print("masuk login 200");
         final user = UserModel.fromJson(jsonDecode(res.body));
         user.password = data.password;
+        print("ini user $user");
 
         await storeCredentialToLocal(user);
 
@@ -136,9 +155,11 @@ class AuthService {
   Future<void> storeCredentialToLocal(UserModel user) async {
     try {
       const storage = FlutterSecureStorage();
+      print("ini user token ${user.token}");
       await storage.write(key: 'token', value: user.token);
       await storage.write(key: 'email', value: user.email);
       await storage.write(key: 'password', value: user.password);
+      print(storage.write(key: 'token', value: user.token).toString());
     } catch (e) {
       rethrow;
     }
@@ -149,10 +170,15 @@ class AuthService {
 
     const storage = FlutterSecureStorage();
     String? value = await storage.read(key: 'token');
+    print("ini value token $value");
 
     if (value != null) {
-      token = 'Bearer ' + value;
+      token = 'Bearer $value';
+    } else {
+      token = '123';
     }
+
+    print("ini token ya : $token");
 
     return token;
   }

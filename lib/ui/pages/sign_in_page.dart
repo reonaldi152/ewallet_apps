@@ -53,23 +53,24 @@ class _SignInPageState extends State<SignInPage> {
               horizontal: 24,
             ),
             children: [
-              Container(
-                width: 155,
-                height: 50,
-                margin: const EdgeInsets.only(
-                  top: 100,
-                  bottom: 100,
-                ),
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      'assets/img_logo_light.png',
-                    ),
-                  ),
-                ),
-              ),
+              // Container(
+              //   width: 155,
+              //   height: 50,
+              //   margin: const EdgeInsets.only(
+              //     top: 100,
+              //     bottom: 100,
+              //   ),
+              //   decoration: const BoxDecoration(
+              //     image: DecorationImage(
+              //       image: AssetImage(
+              //         'assets/img_logo_light.png',
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              SizedBox(height: 170),
               Text(
-                'Sign In &\nGrow Your Finance',
+                'Masuk &\nTingkatkan keuangan anda',
                 style: blackTextStyle.copyWith(
                   fontSize: 20,
                   fontWeight: semiBold,
@@ -89,7 +90,7 @@ class _SignInPageState extends State<SignInPage> {
                   children: [
                     // NOTE: EMAIL INPUT
                     CustomFormField(
-                      title: 'Email Address',
+                      title: 'Email',
                       controller: emailController,
                     ),
                     const SizedBox(
@@ -104,18 +105,18 @@ class _SignInPageState extends State<SignInPage> {
                     const SizedBox(
                       height: 8,
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'Forgot Password',
-                        style: blueTextStyle,
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.centerRight,
+                    //   child: Text(
+                    //     'Lupa password',
+                    //     style: blueTextStyle,
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 30,
                     ),
                     CustomFilledButton(
-                      title: 'Sign In',
+                      title: 'Masuk',
                       onPressed: () {
                         if (validate()) {
                           context.read<AuthBloc>().add(
@@ -139,7 +140,7 @@ class _SignInPageState extends State<SignInPage> {
                 height: 50,
               ),
               CustomTextButton(
-                title: 'Create New Account',
+                title: 'Buat akun baru',
                 onPressed: () {
                   Navigator.pushNamed(context, '/sign-up');
                 },
