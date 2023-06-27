@@ -10,6 +10,9 @@ import 'package:ewallet_apps/ui/widgets/transfer_result_user_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../blocs/bloc/transaction_bloc.dart';
+import '../widgets/home_latest_transaction_item.dart';
+
 class TransferPage extends StatefulWidget {
   const TransferPage({Key? key}) : super(key: key);
 

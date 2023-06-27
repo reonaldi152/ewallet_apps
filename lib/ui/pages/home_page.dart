@@ -12,11 +12,17 @@ import 'package:ewallet_apps/ui/widgets/home_service_item.dart';
 import 'package:ewallet_apps/ui/widgets/home_tips_item.dart';
 import 'package:ewallet_apps/ui/widgets/home_user_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,6 +34,7 @@ class HomePage extends StatelessWidget {
           notchMargin: 6,
           elevation: 0,
           child: BottomNavigationBar(
+            
             type: BottomNavigationBarType.fixed,
             backgroundColor: whiteColor,
             elevation: 0,
@@ -58,26 +65,29 @@ class HomePage extends StatelessWidget {
                   width: 20,
                 ),
                 label: 'History',
+
               ),
-              BottomNavigationBarItem(
-                icon: Image.asset(
-                  'assets/ic_statistic.png',
-                  width: 20,
-                ),
-                label: 'Statistic',
-              ),
-              BottomNavigationBarItem(
-                icon: Image.asset(
-                  'assets/ic_reward.png',
-                  width: 20,
-                ),
-                label: 'Reward',
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Image.asset(
+              //     'assets/ic_statistic.png',
+              //     width: 20,
+              //   ),
+              //   label: 'Statistic',
+              // ),
+              // BottomNavigationBarItem(
+              //   icon: Image.asset(
+              //     'assets/ic_reward.png',
+              //     width: 20,
+              //   ),
+              //   label: 'Reward',
+              // ),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            scanBarcode();
+          },
           backgroundColor: purpleColor,
           child: Image.asset(
             'assets/ic_plus_circle.png',
@@ -117,11 +127,12 @@ class HomePage extends StatelessWidget {
           children: [
             buildProfile(context),
             buildWalletCard(),
-            buildLevel(),
+            // buildLevel(),
             buildServices(context),
-            buildLatestTransactions(),
+            // buildLatestTransactions(),
             buildSendAgain(),
-            buildFriendlyTips(),
+            // buildFriendlyTips(),
+            SizedBox(height: 30)
           ],
         ),
       ),
@@ -326,7 +337,7 @@ class HomePage extends StatelessWidget {
                   style: whiteTextStyle,
                 ),
                 Text(
-                  formatCurrency(state.data.balance ?? 0),
+                  formatCurrency(num.parse(state.data.balance)).toString(),
                   style: whiteTextStyle.copyWith(
                     fontSize: 24,
                     fontWeight: semiBold,
@@ -457,6 +468,7 @@ class HomePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Text(scanResultt.toString()),
           Text(
             'Fitur',
             style: blackTextStyle.copyWith(
@@ -472,7 +484,7 @@ class HomePage extends StatelessWidget {
             children: [
               HomeServiceItem(
                 iconUrl: 'assets/ic_topup.png',
-                title: 'Top Up',
+                title: 'Isi saldo',
                 onTap: () {
                   Navigator.pushNamed(context, '/topup');
                 },
@@ -486,22 +498,30 @@ class HomePage extends StatelessWidget {
               ),
               HomeServiceItem(
                 iconUrl: 'assets/exchange-rate.png',
-                title: 'Penukaran Uang',
+                title: 'Penukaran',
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => MoneyChanger()),
                 ),
               ),
               HomeServiceItem(
-                iconUrl: 'assets/ic_more.png',
-                title: 'More',
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => const MoreDialog(),
-                  );
-                },
+                iconUrl: 'assets/ic_withdraw.png',
+                title: 'Penarikan',
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MoneyChanger()),
+                ),
               ),
+              // HomeServiceItem(
+              //   iconUrl: 'assets/ic_more.png',
+              //   title: 'More',
+              //   onTap: () {
+              //     showDialog(
+              //       context: context,
+              //       builder: (context) => const MoreDialog(),
+              //     );
+              //   },
+              // ),
             ],
           ),
         ],
@@ -741,6 +761,29 @@ class HomePage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String? scanResultt;
+
+  Future scanBarcode() async {
+    String scanResult;
+
+    try {
+      scanResult = await FlutterBarcodeScanner.scanBarcode(
+        "#ff6666",
+        "Cancel",
+        true,
+        ScanMode.QR,
+      );
+    } catch (e) {
+      scanResult = 'Failed to get platform version';
+      debugPrint("ini error scan $e");
+    }
+
+    if (!mounted) return;
+    setState(() {
+      this.scanResultt = scanResult;
+    });
   }
 }
 

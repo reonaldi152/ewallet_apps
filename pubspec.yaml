@@ -49,6 +49,7 @@ dependencies:
   # device_preview: ^1.1.0
   built_value: ^8.4.4
   built_collection: ^5.1.1
+  flutter_barcode_scanner: ^2.0.0
 
 dev_dependencies:
   flutter_test:

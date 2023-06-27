@@ -94,10 +94,10 @@ class AuthService {
 
         return user;
       } else {
-        throw jsonDecode(res.body)['message'];
+        throw jsonDecode(res.body)['message'] as String;
       }
     } catch (e) {
-      print(e);
+      print("ini error login $e");
       rethrow;
     }
   }

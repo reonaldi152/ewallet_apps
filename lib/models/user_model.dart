@@ -1,20 +1,20 @@
 class UserModel {
-  int? id;
+  dynamic id;
   String? name;
   String? email;
   String? username;
   String? password;
   String? emailVerifiedAt;
-  int? verified;
+  dynamic verified;
   dynamic profilePicture;
   dynamic ktp;
   String? createdAt;
   String? updatedAt;
-  int? balance;
+  dynamic balance;
   String? cardNumber;
   String? pin;
   String? token;
-  int? tokenExpiresIn;
+  dynamic tokenExpiresIn;
   String? tokenType;
 
   UserModel(
@@ -84,7 +84,7 @@ class UserModel {
     String? email,
     String? pin,
     String? password,
-    int? balance,
+    dynamic balance,
   }) =>
       UserModel(
         id: id,
