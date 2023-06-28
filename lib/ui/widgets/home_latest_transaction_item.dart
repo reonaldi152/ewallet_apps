@@ -65,7 +65,7 @@ class HomeLatestTransactionItem extends StatelessWidget {
           ),
           Text(
             (transaction.transactionType?.action == 'cr' ? '+ ' : '- ') +
-                formatTransactionCurrency(transaction.amount!),
+                formatTransactionCurrency(num.parse(transaction.amount!)),
             // value,
             style: blackTextStyle.copyWith(
               fontSize: 16,

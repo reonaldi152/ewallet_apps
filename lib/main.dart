@@ -5,6 +5,7 @@ import 'package:ewallet_apps/shared/theme.dart';
 import 'package:ewallet_apps/ui/pages/data_package_page.dart';
 import 'package:ewallet_apps/ui/pages/data_provider_page.dart';
 import 'package:ewallet_apps/ui/pages/data_success_page.dart';
+import 'package:ewallet_apps/ui/pages/history_pembayaran_page.dart';
 import 'package:ewallet_apps/ui/pages/home_page.dart';
 import 'package:ewallet_apps/ui/pages/onboarding_page.dart';
 import 'package:ewallet_apps/ui/pages/pin_page.dart';
@@ -101,6 +102,7 @@ class MyApp extends StatelessWidget {
           '/transfer-success': (context) => const TransferSuccessPage(),
           '/data-provider': (context) => const DataProviderPage(),
           '/data-success': (context) => const DataSuccessPage(),
+          '/historyPayment': (context) => const HistoryPembayaran(),
         },
       ),
     );

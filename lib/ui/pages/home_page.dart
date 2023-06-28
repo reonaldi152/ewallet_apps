@@ -23,6 +23,90 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int selectedIndex = 0;
+
+  void onBottomNavItemTapped(int index) {
+    setState(() {
+      selectedIndex = index; // Update the selected index
+    });
+
+    // Handle the specific item's tap event
+    if (index == 0) {
+      Navigator.pushNamed(context, '/home');
+    } else if (index == 1) {
+      Navigator.pushNamed(context, '/historyPayment');
+    }
+  }
+
+  void _dialogQR() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            title: Text("Pindai Pembayaran"),
+            // content: Column(
+            //   mainAxisSize: MainAxisSize.min,
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: const [
+            //     Text(
+            //       ""
+            //       style: TextStyle(
+            //           color: Colors.black,
+            //           fontWeight: FontWeight.w400,
+            //           fontSize: 14),
+            //     ),
+            //     SizedBox(height: 5),
+            //     Text(
+            //       "1. To find your exact delivery address location, and\n2. To find nearest outlet location from your current or selected position\nPlease allow us to get your location for our awesome application features.",
+            //       textAlign: TextAlign.left,
+            //       style: TextStyle(
+            //         color: Colors.black,
+            //         fontWeight: FontWeight.w400,
+            //         fontSize: 14,
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(purpleColor),
+                        ),
+                        onPressed: () {
+                          scanBarcode();
+                        },
+                        child: const Text("Yes")),
+                  ),
+
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(purpleColor),
+                        ),
+                        onPressed: () {
+                          debugPrint("Yes");
+                        },
+                        child: const Text("Yes")),
+                  ),
+                  // ),
+                ],
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,7 +118,8 @@ class _HomePageState extends State<HomePage> {
           notchMargin: 6,
           elevation: 0,
           child: BottomNavigationBar(
-            
+            currentIndex: selectedIndex,
+            onTap: onBottomNavItemTapped,
             type: BottomNavigationBarType.fixed,
             backgroundColor: whiteColor,
             elevation: 0,
@@ -65,7 +150,6 @@ class _HomePageState extends State<HomePage> {
                   width: 20,
                 ),
                 label: 'History',
-
               ),
               // BottomNavigationBarItem(
               //   icon: Image.asset(
@@ -86,7 +170,7 @@ class _HomePageState extends State<HomePage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            scanBarcode();
+            _dialogQR();
           },
           backgroundColor: purpleColor,
           child: Image.asset(

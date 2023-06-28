@@ -1,6 +1,6 @@
 class TransactionModel {
-  final int? id;
-  final int? amount;
+  final dynamic id;
+  final dynamic amount;
   final String? createdAt;
   final TransactionTypeModel? transactionType;
 
@@ -25,7 +25,7 @@ class TransactionModel {
 }
 
 class TransactionTypeModel {
-  final int? id;
+  final dynamic id;
   final String? name;
   final String? code;
   final String? action;
