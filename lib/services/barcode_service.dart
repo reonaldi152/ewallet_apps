@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class BarcodeService {
-  Future<List<BarcodeModel>> getBarcode(String username) async {
+  Future<BarcodeModel> getBarcode(String username) async {
     try {
       final token = await AuthService().getToken();
 
@@ -20,11 +20,8 @@ class BarcodeService {
       debugPrint(res.body);
 
       if (res.statusCode == 200) {
-        List<BarcodeModel> barcodes = List<BarcodeModel>.from(
-          jsonDecode(res.body).map(
-            (barcode) => BarcodeModel.fromJson(barcode),
-          ),
-        ).toList();
+        Map<String, dynamic> responseBody = jsonDecode(res.body);
+        BarcodeModel barcodes = BarcodeModel.fromJson(responseBody);
 
         return barcodes;
       } else {

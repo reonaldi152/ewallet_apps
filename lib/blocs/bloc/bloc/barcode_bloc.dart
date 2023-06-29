@@ -16,7 +16,7 @@ class BarcodeBloc extends Bloc<BarcodeEvent, BarcodeState> {
 
           final barcode = await BarcodeService().getBarcode(event.username);
 
-          emit(BarcodeSuccess(barcode));
+          emit(BarcodeSuccess(barcode as BarcodeModel));
         } catch (e) {
           debugPrint(e.toString());
 

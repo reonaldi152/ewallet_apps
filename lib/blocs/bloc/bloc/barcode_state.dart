@@ -20,7 +20,7 @@ class BarcodeFailed extends BarcodeState {
 }
 
 class BarcodeSuccess extends BarcodeState {
-  final List<BarcodeModel> barcode;
+  final BarcodeModel barcode;
   const BarcodeSuccess(this.barcode);
 
   @override

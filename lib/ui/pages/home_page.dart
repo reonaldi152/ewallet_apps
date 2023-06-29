@@ -5,6 +5,7 @@ import 'package:ewallet_apps/blocs/user/user_bloc.dart';
 import 'package:ewallet_apps/models/transfer_form_model.dart';
 import 'package:ewallet_apps/shared/helpers.dart';
 import 'package:ewallet_apps/shared/theme.dart';
+import 'package:ewallet_apps/ui/pages/barcode_page.dart';
 import 'package:ewallet_apps/ui/pages/money_changer_home.dart';
 import 'package:ewallet_apps/ui/pages/transfer_amount_page.dart';
 import 'package:ewallet_apps/ui/widgets/home_latest_transaction_item.dart';
@@ -38,6 +39,8 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  dynamic username;
+
   void _dialogQR() {
     showDialog(
         context: context,
@@ -47,29 +50,6 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(12),
             ),
             title: Text("Pindai Pembayaran"),
-            // content: Column(
-            //   mainAxisSize: MainAxisSize.min,
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: const [
-            //     Text(
-            //       ""
-            //       style: TextStyle(
-            //           color: Colors.black,
-            //           fontWeight: FontWeight.w400,
-            //           fontSize: 14),
-            //     ),
-            //     SizedBox(height: 5),
-            //     Text(
-            //       "1. To find your exact delivery address location, and\n2. To find nearest outlet location from your current or selected position\nPlease allow us to get your location for our awesome application features.",
-            //       textAlign: TextAlign.left,
-            //       style: TextStyle(
-            //         color: Colors.black,
-            //         fontWeight: FontWeight.w400,
-            //         fontSize: 14,
-            //       ),
-            //     ),
-            //   ],
-            // ),
             actions: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -82,9 +62,21 @@ class _HomePageState extends State<HomePage> {
                               MaterialStatePropertyAll(purpleColor),
                         ),
                         onPressed: () {
-                          scanBarcode();
+                          Navigator.pop(context);
+                          scanBarcode().whenComplete(() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TransferAmountPage(
+                                  data: TransferFormModel(
+                                    sendTo: scanResultt.toString(),
+                                  ),
+                                ),
+                              ),
+                            );
+                          });
                         },
-                        child: const Text("Yes")),
+                        child: const Text("scan")),
                   ),
 
                   SizedBox(
@@ -95,9 +87,15 @@ class _HomePageState extends State<HomePage> {
                               MaterialStatePropertyAll(purpleColor),
                         ),
                         onPressed: () {
-                          debugPrint("Yes");
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    BarcodePage(username: username),
+                              ));
                         },
-                        child: const Text("Yes")),
+                        child: const Text("barcode")),
                   ),
                   // ),
                 ],
@@ -227,6 +225,7 @@ class _HomePageState extends State<HomePage> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is AuthSuccess) {
+          username = state.data.username;
           return Container(
             margin: const EdgeInsets.only(
               top: 40,
@@ -552,7 +551,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Text(scanResultt.toString()),
+          Text(scanResultt.toString()),
           Text(
             'Fitur',
             style: blackTextStyle.copyWith(

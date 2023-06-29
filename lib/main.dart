@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:ewallet_apps/blocs/auth/auth_bloc.dart';
+import 'package:ewallet_apps/blocs/bloc/bloc/barcode_bloc.dart';
 import 'package:ewallet_apps/shared/theme.dart';
+import 'package:ewallet_apps/ui/pages/barcode_page.dart';
 import 'package:ewallet_apps/ui/pages/data_package_page.dart';
 import 'package:ewallet_apps/ui/pages/data_provider_page.dart';
 import 'package:ewallet_apps/ui/pages/data_success_page.dart';
@@ -58,6 +60,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => UserBloc(),
         ),
+        BlocProvider(
+          create: (context) => BarcodeBloc(),
+        ),
         BlocProvider<CurrencyRateBloc>(
           create: (_) => CurrencyRateBloc(Repository()),
         ),
@@ -103,6 +108,7 @@ class MyApp extends StatelessWidget {
           '/data-provider': (context) => const DataProviderPage(),
           '/data-success': (context) => const DataSuccessPage(),
           '/historyPayment': (context) => const HistoryPembayaran(),
+          '/barcode': (context) => const BarcodePage(),
         },
       ),
     );
