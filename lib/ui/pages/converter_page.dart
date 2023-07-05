@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:currency_picker/currency_picker.dart';
+import 'package:ewallet_apps/models/info_rates_model.dart';
+import 'package:ewallet_apps/models/symbols_rates_models.dart';
+import 'package:ewallet_apps/services/convert_rate_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -16,8 +21,9 @@ class ConverterPage extends StatefulWidget {
 class _ConverterPageState extends State<ConverterPage>
     with SingleTickerProviderStateMixin {
   String _fromCurrencyCode = "USD";
+  String? _currencyName;
 
-  String _toCurrencyCode = "EUR";
+  String _toCurrencyCode = "IDR";
 
   AnimationController? _controller;
 
@@ -26,6 +32,8 @@ class _ConverterPageState extends State<ConverterPage>
 
   @override
   void initState() {
+    getInfoRates("USD", 1);
+    getSymbols();
     _editingController = TextEditingController();
     _focusNode = FocusNode();
     _controller =
@@ -80,17 +88,139 @@ class _ConverterPageState extends State<ConverterPage>
                 SizedBox(
                   height: 20,
                 ),
-                daysRowItem(),
+                // daysRowItem(),
                 SizedBox(
                   height: 20,
                 ),
-                ChartWidget(),
+                // ChartWidget(),
+                (_infoRatesModel == null)
+                    ? CircularProgressIndicator()
+                    : ListView.builder(
+                        physics: ScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: _infoRatesModel?.rates?.length,
+                        itemBuilder: (context, index) {
+                          dynamic nameCountry;
+                          var country = _infoRatesModel!.rates!.keys.toList();
+
+                          // debugPrint(
+                          //     "ini ya ${_symbolsRatesModel?.symbols?.keys.toList()[index] == country[index]}");
+
+                          // debugPrint(country.toString());
+
+                          // var nameCurrency = country[index].contains();
+                          if (country[index].toString() == "AUD") {
+                            nameCountry = "Australian Dollar";
+                          } else if (country[index].toString() == "BND") {
+                            nameCountry = "Brunei Dollar";
+                          } else if (country[index].toString() == "CAD") {
+                            nameCountry = "Canada Dollar";
+                          } else if (country[index].toString() == "CHF") {
+                            nameCountry = "Swiss Franc";
+                          } else if (country[index].toString() == "CNH") {
+                            nameCountry = "Chinese Yuan (Offshore)";
+                          } else if (country[index].toString() == "CNY") {
+                            nameCountry = "Chinese Yuan";
+                          } else if (country[index].toString() == "DKK") {
+                            nameCountry = "Denmark Krone ";
+                          } else if (country[index].toString() == "EUR") {
+                            nameCountry = "Europe Euro";
+                          } else if (country[index].toString() == "GBP") {
+                            nameCountry = "British Pound Sterling";
+                          } else if (country[index].toString() == "HKD") {
+                            nameCountry = "Hong Kong Dollar";
+                          } else if (country[index].toString() == "JPY") {
+                            nameCountry = "Japanese Yen";
+                          } else if (country[index].toString() == "KRW") {
+                            nameCountry = "South Korean Won";
+                          } else if (country[index].toString() == "KWD") {
+                            nameCountry = "Kuwait Dinar";
+                          } else if (country[index].toString() == "LAK") {
+                            nameCountry = "Laos Kip";
+                          } else if (country[index].toString() == "MYR") {
+                            nameCountry = "Malaysian Ringgit";
+                          } else if (country[index].toString() == "NOK") {
+                            nameCountry = "Norwegian Krone";
+                          } else if (country[index].toString() == "NZD") {
+                            nameCountry = "New Zealand Dollar";
+                          } else if (country[index].toString() == "PGK") {
+                            nameCountry = "Papua New Guinean Kina";
+                          } else if (country[index].toString() == "PHP") {
+                            nameCountry = "Philippine Peso";
+                          } else if (country[index].toString() == "SAR") {
+                            nameCountry = "Saudi Riyal";
+                          } else if (country[index].toString() == "SEK") {
+                            nameCountry = "Swedia Krona";
+                          } else if (country[index].toString() == "SGD") {
+                            nameCountry = "Singapore Dollar";
+                          } else if (country[index].toString() == "THB") {
+                            nameCountry = "Thailand Baht";
+                          } else if (country[index].toString() == "USD") {
+                            nameCountry = "United States Dollar";
+                          } else if (country[index].toString() == "VND") {
+                            nameCountry = "Vietnam Dong";
+                          } else {
+                            nameCountry = "";
+                          }
+                          var rates = _infoRatesModel!.rates!.values.toList();
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 5),
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(10), // radius of 10
+                                color: Colors.green // green as background color
+                                ),
+                            width: double.infinity,
+                            padding: EdgeInsets.only(),
+                            child: ListTile(
+                              // leading: CircleAvatar(
+                              //     backgroundImage:
+                              //         AssetImage('assets/convert.png')),
+                              title: Text(country[index].toString()),
+                              subtitle: Text(nameCountry),
+                              trailing: Text(rates[index].toString()),
+                            ),
+                          );
+                        },
+                      ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  InfoRatesModel? _infoRatesModel;
+  getInfoRates(base, amount) async {
+    ConvertRateService().getInfoRates(base, amount).then((value) {
+      if (value != null) {
+        debugPrint("value rates ${value.rates}");
+
+        setState(() {
+          _infoRatesModel = value;
+        });
+        // try {
+        //   Map<String, dynamic> jsonData = jsonDecode(value.toString());
+        //   InfoRatesModel infoRatesModel = InfoRatesModel.fromJson(jsonData);
+
+        //   setState(() {
+        //     _infoRatesModel = infoRatesModel;
+        //   });
+        // } catch (e) {
+        //   debugPrint("JSON parsing error: $e");
+        // }
+      }
+    });
+  }
+
+  SymbolsRatesModel? _symbolsRatesModel;
+  getSymbols() async {
+    ConvertRateService().getSymbols().then((value) {
+      setState(() {
+        _symbolsRatesModel = value;
+      });
+    });
   }
 
   Widget toCurrencyItemWidget() {
@@ -125,19 +255,6 @@ class _ConverterPageState extends State<ConverterPage>
   // }
 
   void _openCurrencyPickerDialogTo() {
-    // showDialog(
-    //     context: context,
-    //     builder: (_) => CurrencyPickerDialog(
-    //           itemBuilder: _buildDropDownItem,
-    //           title: Text("Convert to"),
-    //           isSearchable: true,
-    //           onValuePicked: (Country country) {
-    //             if (mounted)
-    //               setState(() {
-    //                 _toCurrencyCode = country.currencyCode;
-    //               });
-    //           },
-    //         ));
     showCurrencyPicker(
       context: context,
       showFlag: true,
@@ -156,20 +273,6 @@ class _ConverterPageState extends State<ConverterPage>
   }
 
   void _openCurrencyPickerDialogFrom() {
-    // showDialog(
-    //     context: context,
-    //     builder: (_) => CurrencyPickerDialog(
-    //           itemBuilder: _buildDropDownItem,
-    //           title: Text("Convert from"),
-    //           isSearchable: true,
-    //           onValuePicked: (Country country) {
-    //             if (mounted)
-    //               setState(() {
-    //                 _fromCurrencyCode = country.currencyCode;
-    //               });
-    //           },
-    //         ));
-
     showCurrencyPicker(
       context: context,
       showFlag: true,
@@ -178,9 +281,11 @@ class _ConverterPageState extends State<ConverterPage>
       onSelect: (Currency currency) {
         print('Select from currency: ${currency.name}');
         print('Select from currency code: ${currency.code}');
+        print('Select from flag: ${currency.flag}');
         if (mounted) {
           setState(() {
             _fromCurrencyCode = currency.code;
+            _currencyName = currency.name;
           });
         }
       },

@@ -63,18 +63,33 @@ class _HomePageState extends State<HomePage> {
                         ),
                         onPressed: () {
                           Navigator.pop(context);
-                          scanBarcode().whenComplete(() {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => TransferAmountPage(
-                                  data: TransferFormModel(
-                                    sendTo: scanResultt.toString(),
-                                  ),
+
+                          scanBarcode()
+                              .then((value) => debugPrint("ini value $value"));
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TransferAmountPage(
+                                data: TransferFormModel(
+                                  sendTo: scanResultt.toString(),
                                 ),
                               ),
-                            );
-                          });
+                            ),
+                          );
+
+                          // if (scanResultt != null) {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => TransferAmountPage(
+                          //         data: TransferFormModel(
+                          //           sendTo: scanResultt.toString(),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   );
+                          // }
                         },
                         child: const Text("scan")),
                   ),
