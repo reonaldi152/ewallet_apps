@@ -6,7 +6,9 @@ import 'package:ewallet_apps/models/transfer_form_model.dart';
 import 'package:ewallet_apps/shared/helpers.dart';
 import 'package:ewallet_apps/shared/theme.dart';
 import 'package:ewallet_apps/ui/pages/barcode_page.dart';
+import 'package:ewallet_apps/ui/pages/converter_page.dart';
 import 'package:ewallet_apps/ui/pages/money_changer_home.dart';
+import 'package:ewallet_apps/ui/pages/money_changer_page.dart';
 import 'package:ewallet_apps/ui/pages/transfer_amount_page.dart';
 import 'package:ewallet_apps/ui/widgets/home_latest_transaction_item.dart';
 import 'package:ewallet_apps/ui/widgets/home_service_item.dart';
@@ -243,32 +245,40 @@ class _HomePageState extends State<HomePage> {
           username = state.data.username;
           return Container(
             margin: const EdgeInsets.only(
-              top: 40,
+              top: 30,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Selamat Datang',
-                      style: greyTextStyle.copyWith(
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      state.data.username.toString(),
-                      style: blackTextStyle.copyWith(
-                        fontSize: 20,
-                        fontWeight: semiBold,
-                      ),
-                    ),
-                  ],
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     Text(
+                //       'Selamat Datang',
+                //       style: greyTextStyle.copyWith(
+                //         fontSize: 16,
+                //       ),
+                //     ),
+                //     const SizedBox(
+                //       height: 2,
+                //     ),
+                //     Text(
+                //       state.data.username.toString(),
+                //       style: blackTextStyle.copyWith(
+                //         fontSize: 20,
+                //         fontWeight: semiBold,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                Text(
+                  state.data.username.toString(),
+                  style: blackTextStyle.copyWith(
+                    fontSize: 20,
+                    fontWeight: semiBold,
+                  ),
                 ),
+                Image.asset('assets/text_mimopay.png', width: 64),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, '/profile');
@@ -566,7 +576,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(scanResultt.toString()),
+          // Text(scanResultt.toString()),
           Text(
             'Fitur',
             style: blackTextStyle.copyWith(
@@ -577,37 +587,44 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(
             height: 14,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
             children: [
               HomeServiceItem(
-                iconUrl: 'assets/ic_topup.png',
+                iconUrl: 'assets/logo_topup.png',
                 title: 'Isi saldo',
                 onTap: () {
                   Navigator.pushNamed(context, '/topup');
                 },
               ),
               HomeServiceItem(
-                iconUrl: 'assets/ic_send.png',
+                iconUrl: 'assets/logo_transfer.png',
                 title: 'Transfer',
                 onTap: () {
                   Navigator.pushNamed(context, '/transfer');
                 },
               ),
               HomeServiceItem(
-                iconUrl: 'assets/exchange-rate.png',
+                iconUrl: 'assets/logo_exchange.png',
                 title: 'Penukaran',
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MoneyChanger()),
-                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MoneyChangerPage()),
+                  );
+                },
               ),
               HomeServiceItem(
-                iconUrl: 'assets/ic_withdraw.png',
+                iconUrl: 'assets/logo_penarikan.png',
                 title: 'Penarikan',
+                onTap: () {},
+              ),
+              HomeServiceItem(
+                iconUrl: 'assets/exchange-rate.png',
+                title: 'Info Kurs',
+                color: Color(0xffABAFF9),
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MoneyChanger()),
+                  MaterialPageRoute(builder: (context) => ConverterPage()),
                 ),
               ),
               // HomeServiceItem(

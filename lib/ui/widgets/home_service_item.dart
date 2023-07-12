@@ -5,12 +5,14 @@ class HomeServiceItem extends StatelessWidget {
   final String iconUrl;
   final String title;
   final VoidCallback? onTap;
+  final Color? color;
 
   const HomeServiceItem({
     Key? key,
     required this.iconUrl,
     required this.title,
     this.onTap,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class HomeServiceItem extends StatelessWidget {
             height: 70,
             margin: const EdgeInsets.only(
               bottom: 8,
+              right: 14,
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -33,6 +36,7 @@ class HomeServiceItem extends StatelessWidget {
               child: Image.asset(
                 iconUrl,
                 width: 26,
+                color: color,
               ),
             ),
           ),

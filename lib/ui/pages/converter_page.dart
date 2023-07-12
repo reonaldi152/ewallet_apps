@@ -55,7 +55,7 @@ class _ConverterPageState extends State<ConverterPage>
       child: Scaffold(
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.only(left: 20, right: 20, top: 40, bottom: 10),
             child: Column(
               children: <Widget>[
                 inputTextWidget(),
