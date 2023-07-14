@@ -1,8 +1,12 @@
 import 'package:currency_picker/currency_picker.dart';
+import 'package:ewallet_apps/ui/pages/penukaran_amount_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../shared/helpers.dart';
+
 class MoneyChangerPage extends StatefulWidget {
-  const MoneyChangerPage({super.key});
+  const MoneyChangerPage({super.key, this.balance});
+  final dynamic balance;
 
   @override
   State<MoneyChangerPage> createState() => _MoneyChangerPageState();
@@ -10,6 +14,8 @@ class MoneyChangerPage extends StatefulWidget {
 
 class _MoneyChangerPageState extends State<MoneyChangerPage> {
   String _toCurrencyCode = "USD";
+  dynamic symbols = "USD";
+  dynamic country = "US Dollar";
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +47,8 @@ class _MoneyChangerPageState extends State<MoneyChangerPage> {
                 //     backgroundImage:
                 //         AssetImage('assets/convert.png')),
                 title: Text("Rupiah"),
-                subtitle: Text("100.000"),
+                subtitle:
+                    Text(formatCurrency(num.parse(widget.balance)).toString()),
               ),
             ),
             SizedBox(height: 15),
@@ -66,6 +73,30 @@ class _MoneyChangerPageState extends State<MoneyChangerPage> {
           ],
         ),
       ),
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ButtonStyle(
+            shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            backgroundColor: MaterialStatePropertyAll(Color(0xff7176EC)),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PenukaranAmountPage(symbols: symbols, country: country),
+              ),
+            );
+          },
+          child: Text("Selanjutnya"),
+        ),
+      ),
     );
   }
 
@@ -76,8 +107,13 @@ class _MoneyChangerPageState extends State<MoneyChangerPage> {
       showCurrencyName: true,
       showCurrencyCode: true,
       onSelect: (Currency currency) {
-        print('Select currency to : ${currency.name}');
-        print('Select currency to : ${currency.code}');
+        print('ini name: ${currency.name}');
+        print('ini code : ${currency.code}');
+
+        setState(() {
+          symbols = currency.code;
+          country = currency.name;
+        });
         if (mounted) {
           setState(() {
             _toCurrencyCode = currency.code;
@@ -94,5 +130,49 @@ class _MoneyChangerPageState extends State<MoneyChangerPage> {
         Text(_toCurrencyCode)
       ],
     );
+  }
+
+  void _dialogConfirm() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            content: Text("Apakah anda yakin untuk menukar uang"),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.blue),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Tidak")),
+                  ),
+
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.blue),
+                        ),
+                        onPressed: () {},
+                        child: const Text("Yakin")),
+                  ),
+                  // ),
+                ],
+              ),
+            ],
+          );
+        });
   }
 }

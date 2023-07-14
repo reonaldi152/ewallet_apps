@@ -27,6 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
+  dynamic balance;
 
   void onBottomNavItemTapped(int index) {
     setState(() {
@@ -400,6 +401,7 @@ class _HomePageState extends State<HomePage> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is AuthSuccess) {
+          balance = state.data.balance;
           return Container(
             width: double.infinity,
             height: 220,
@@ -609,7 +611,10 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MoneyChangerPage()),
+                    MaterialPageRoute(
+                        builder: (context) => MoneyChangerPage(
+                              balance: balance,
+                            )),
                   );
                 },
               ),
