@@ -2,6 +2,7 @@ import 'package:currency_picker/currency_picker.dart';
 import 'package:ewallet_apps/ui/pages/penukaran_amount_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/exchange_service.dart';
 import '../../shared/helpers.dart';
 
 class MoneyChangerPage extends StatefulWidget {
@@ -174,5 +175,11 @@ class _MoneyChangerPageState extends State<MoneyChangerPage> {
             ],
           );
         });
+  }
+
+  postExchange() async {
+    ExchangeService()
+        .getHistroy()
+        .then((value) => debugPrint("ini value exchange $value[0]"));
   }
 }

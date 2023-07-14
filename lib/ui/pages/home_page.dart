@@ -190,7 +190,8 @@ class _HomePageState extends State<HomePage> {
           },
           backgroundColor: purpleColor,
           child: Image.asset(
-            'assets/ic_plus_circle.png',
+            // 'assets/ic_plus_circle.png',
+            'assets/pay.png',
             width: 24,
           ),
         ),
