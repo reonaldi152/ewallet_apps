@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ExchangeService {
-  Future postExchange(amount, symbols, country) async {
+  Future<Map<String, dynamic>?> postExchange(amount, symbols, country) async {
     try {
       final token = await AuthService().getToken();
 
@@ -20,15 +20,44 @@ class ExchangeService {
       debugPrint("$amount,$symbols,$country");
 
       debugPrint(res.body);
+      return jsonDecode(res.body);
 
-      if (res.statusCode == 200) {
-        Map<String, dynamic> responseBody = jsonDecode(res.body);
-        BarcodeModel barcodes = BarcodeModel.fromJson(responseBody);
+      // if (res.statusCode == 200) {
+      //   Map<String, dynamic> responseBody = jsonDecode(res.body);
+      //   BarcodeModel barcodes = BarcodeModel.fromJson(responseBody);
 
-        return barcodes;
-      } else {
-        throw jsonDecode(res.body)['message'];
-      }
+      //   return barcodes;
+      // } else {
+      //   throw jsonDecode(res.body)['message'];
+      // }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getHistroy() async {
+    try {
+      final token = await AuthService().getToken();
+
+      final res = await http.get(
+        Uri.parse('$baseUrl/users/exchange-currency/history'),
+        headers: {
+          'Authorization': token,
+        },
+      );
+
+      debugPrint(res.body);
+      return jsonDecode(res.body);
+
+      // if (res.statusCode == 200) {
+      //   Map<String, dynamic> responseBody = jsonDecode(res.body);
+      //   BarcodeModel barcodes = BarcodeModel.fromJson(responseBody);
+
+      //   return barcodes;
+      // } else {
+      //   throw jsonDecode(res.body)['message'];
+      // }
     } catch (e) {
       print(e);
       rethrow;

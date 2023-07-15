@@ -14,13 +14,18 @@ class _SuccessPageState extends State<SuccessPage> {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/successful.png'),
+            Image.asset(
+              'assets/successful.png',
+              width: 277,
+            ),
             SizedBox(height: 24),
             Text(widget.desc.toString()),
             SizedBox(height: 32),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              margin: EdgeInsets.symmetric(horizontal: 32),
+              height: 49,
               width: double.infinity,
               child: ElevatedButton(
                 style: ButtonStyle(
@@ -31,8 +36,11 @@ class _SuccessPageState extends State<SuccessPage> {
                   ),
                   backgroundColor: MaterialStatePropertyAll(Color(0xff7176EC)),
                 ),
-                onPressed: () {},
-                child: Text("Selanjutnya"),
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/home', (route) => false);
+                },
+                child: Text("Kembali Ke Beranda"),
               ),
             ),
           ],

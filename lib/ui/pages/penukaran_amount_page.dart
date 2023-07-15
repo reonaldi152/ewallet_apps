@@ -4,6 +4,7 @@ import 'package:ewallet_apps/models/transfer_form_model.dart';
 import 'package:ewallet_apps/services/exchange_service.dart';
 import 'package:ewallet_apps/shared/helpers.dart';
 import 'package:ewallet_apps/shared/theme.dart';
+import 'package:ewallet_apps/ui/pages/success_page.dart';
 import 'package:ewallet_apps/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,11 +15,13 @@ class PenukaranAmountPage extends StatefulWidget {
   // final TransferFormModel data;
   final dynamic symbols;
   final dynamic country;
+  final dynamic balance;
 
   const PenukaranAmountPage({
     Key? key,
     this.country,
     this.symbols,
+    this.balance,
     // required this.data,
   }) : super(key: key);
 
@@ -248,10 +251,24 @@ class _PenukaranAmountPageState extends State<PenukaranAmountPage> {
                 CustomFilledButton(
                   title: 'Selanjutnya',
                   onPressed: () async {
-                    postExchange(
-                        widget.symbols,
-                        amountController.text.replaceAll('.', ''),
-                        widget.country);
+                    debugPrint("ini balance ${widget.balance}");
+                    if (int.parse(amountController.text.replaceAll('.', '')) >=
+                        10000) {
+                      postExchange(
+                          widget.symbols,
+                          amountController.text.replaceAll('.', ''),
+                          widget.country);
+                    } else {
+                      showCustomSnackbar(context, "Harus lebih dari 10.000");
+                    }
+                    // if (int.parse(widget.balance) >=
+                    //     int.parse(amountController.text.replaceAll('.', ''))) {
+
+                    // } else {
+                    //   showCustomSnackbar(
+                    //       context, "saldo rupiah anda belum cukup");
+                    // }
+
                     // if (await Navigator.pushNamed(context, '/pin') == true) {
                     //   final authState = context.read<AuthBloc>().state;
                     //   String pin = '';
@@ -471,6 +488,21 @@ class _PenukaranAmountPageState extends State<PenukaranAmountPage> {
   postExchange(symbols, amount, country) async {
     ExchangeService()
         .postExchange(amount, symbols, country)
-        .then((value) => debugPrint("ini value exchange $value"));
+        .then((Map<String, dynamic>? value) {
+      debugPrint("ini value exchange ${value?['message']}");
+      if (value?['message'].toString() == "Exchange Success") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                SuccessPage(desc: "Penukaran Mata Uang Sukses"),
+          ),
+        );
+      } else if (value?['message'].toString() == "Your balance is not enough") {
+        showCustomSnackbar(context, "Saldo Rupiah anda kurang");
+      } else {
+        showCustomSnackbar(context, "Error");
+      }
+    });
   }
 }
