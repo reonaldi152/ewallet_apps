@@ -10,6 +10,7 @@ import 'package:ewallet_apps/ui/pages/converter_page.dart';
 import 'package:ewallet_apps/ui/pages/money_changer_home.dart';
 import 'package:ewallet_apps/ui/pages/money_changer_page.dart';
 import 'package:ewallet_apps/ui/pages/transfer_amount_page.dart';
+import 'package:ewallet_apps/ui/pages/withdraw_asing_page.dart';
 import 'package:ewallet_apps/ui/widgets/home_latest_transaction_item.dart';
 import 'package:ewallet_apps/ui/widgets/home_service_item.dart';
 import 'package:ewallet_apps/ui/widgets/home_tips_item.dart';
@@ -622,7 +623,12 @@ class _HomePageState extends State<HomePage> {
               HomeServiceItem(
                 iconUrl: 'assets/logo_penarikan.png',
                 title: 'Penarikan',
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => WithdrawAsingPage()));
+                },
               ),
               HomeServiceItem(
                 iconUrl: 'assets/exchange-rate.png',
