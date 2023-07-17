@@ -24,7 +24,7 @@ class _TopupPageState extends State<TopupPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Top Up',
+          'Isi Saldo',
         ),
       ),
       body: ListView(
@@ -36,7 +36,7 @@ class _TopupPageState extends State<TopupPage> {
             height: 30,
           ),
           Text(
-            'Wallet',
+            'Dompet',
             style: blackTextStyle.copyWith(
               fontSize: 16,
               fontWeight: semiBold,
@@ -122,7 +122,7 @@ class _TopupPageState extends State<TopupPage> {
             height: 40,
           ),
           Text(
-            'Select Bank',
+            'Pilih Bank',
             style: blackTextStyle.copyWith(
               fontSize: 16,
               fontWeight: semiBold,

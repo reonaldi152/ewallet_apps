@@ -1,19 +1,30 @@
+import 'dart:math';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:ewallet_apps/blocs/auth/auth_bloc.dart';
+import 'package:ewallet_apps/services/withdraw_service.dart';
 import 'package:ewallet_apps/shared/helpers.dart';
 import 'package:ewallet_apps/shared/theme.dart';
+import 'package:ewallet_apps/ui/pages/success_page.dart';
+import 'package:ewallet_apps/ui/pages/withdraw_asing_confirm_page.dart';
 import 'package:ewallet_apps/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PinPage extends StatefulWidget {
-  const PinPage({Key? key}) : super(key: key);
+class PinTransferAsing extends StatefulWidget {
+  const PinTransferAsing(
+      {Key? key, this.amount, this.symbols, this.country, this.username})
+      : super(key: key);
+  final dynamic amount;
+  final dynamic symbols;
+  final dynamic country;
+  final dynamic username;
 
   @override
-  State<PinPage> createState() => _PinPageState();
+  State<PinTransferAsing> createState() => _PinTransferAsingState();
 }
 
-class _PinPageState extends State<PinPage> {
+class _PinTransferAsingState extends State<PinTransferAsing> {
   final TextEditingController pinController = TextEditingController(text: '');
   String pin = '';
   bool isError = false;
@@ -27,7 +38,16 @@ class _PinPageState extends State<PinPage> {
 
     if (pinController.text.length == 6) {
       if (pinController.text == pin) {
-        Navigator.pop(context, true);
+        debugPrint("ini ya $pin");
+        debugPrint(
+            "${widget.amount}, ${widget.country}, ${pin}, ${widget.symbols}, ${widget.username}");
+        postTransferAsing(
+          amount: widget.amount,
+          country: widget.country,
+          pin: pin,
+          symbols: widget.symbols,
+          username: widget.username,
+        );
       } else {
         setState(() {
           isError = true;
@@ -53,6 +73,7 @@ class _PinPageState extends State<PinPage> {
     final state = context.read<AuthBloc>().state;
     if (state is AuthSuccess) {
       pin = state.data.pin!;
+      debugPrint("ini pinn $pin");
     }
   }
 
@@ -341,5 +362,27 @@ class _PinPageState extends State<PinPage> {
     //     ),
     //   ),
     // );
+  }
+
+  postTransferAsing({symbols, amount, country, pin, username}) async {
+    WithdrawService()
+        .postTransferAsing(amount, symbols, country, pin, username)
+        .then((Map<String, dynamic>? value) {
+      debugPrint("ini value withdraw asing ${value}");
+
+      if (value?['message'].toString() == "Transfer Success") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  SuccessPage(desc: "Transfer Mata Uang Asing Berhasil"),
+            ));
+      } else if (value?['message'].toString() ==
+          "Your $symbols balance is not enough") {
+        showCustomSnackbar(context, "Saldo $symbols anda kurang");
+      } else {
+        showCustomSnackbar(context, "Error");
+      }
+    });
   }
 }

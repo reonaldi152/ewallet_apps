@@ -107,7 +107,7 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                 ),
                 Center(
                   child: Text(
-                    'Total Amount',
+                    'Isi Nominal',
                     style: whiteTextStyle.copyWith(
                       fontSize: 20,
                       fontWeight: semiBold,
@@ -243,31 +243,32 @@ class _TransferAmountPageState extends State<TransferAmountPage> {
                 CustomFilledButton(
                   title: 'Continue',
                   onPressed: () async {
-                    if (await Navigator.pushNamed(context, '/pin') == true) {
-                      final authState = context.read<AuthBloc>().state;
-                      String pin = '';
-                      if (authState is AuthSuccess) {
-                        pin = authState.data.pin!;
-                      }
+                    if (int.parse(amountController.text.replaceAll('.', '')) <=
+                        1000) {
+                      showCustomSnackbar(context, "Harus melebihi 1000 rupiah");
+                    } else {
+                      if (await Navigator.pushNamed(context, '/pin') == true) {
+                        final authState = context.read<AuthBloc>().state;
+                        String pin = '';
+                        if (authState is AuthSuccess) {
+                          pin = authState.data.pin!;
+                        }
 
-                      context.read<TransferFormBloc>().add(
-                            TransferFormPost(
-                              widget.data.copyWith(
-                                pin: pin,
-                                amount:
-                                    amountController.text.replaceAll('.', ''),
+                        context.read<TransferFormBloc>().add(
+                              TransferFormPost(
+                                widget.data.copyWith(
+                                  pin: pin,
+                                  amount:
+                                      amountController.text.replaceAll('.', ''),
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                      }
                     }
                   },
                 ),
                 const SizedBox(
                   height: 25,
-                ),
-                CustomTextButton(
-                  title: 'Terms & Conditions',
-                  onPressed: () {},
                 ),
                 const SizedBox(
                   height: 40,

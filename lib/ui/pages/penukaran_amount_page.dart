@@ -115,7 +115,7 @@ class _PenukaranAmountPageState extends State<PenukaranAmountPage> {
                 ),
                 Center(
                   child: Text(
-                    'Total Amount',
+                    'Isi Nominal',
                     style: whiteTextStyle.copyWith(
                       fontSize: 20,
                       fontWeight: semiBold,
@@ -290,10 +290,6 @@ class _PenukaranAmountPageState extends State<PenukaranAmountPage> {
                 ),
                 const SizedBox(
                   height: 25,
-                ),
-                CustomTextButton(
-                  title: 'Terms & Conditions',
-                  onPressed: () {},
                 ),
                 const SizedBox(
                   height: 40,

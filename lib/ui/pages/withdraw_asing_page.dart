@@ -19,6 +19,7 @@ class _WithdrawAsingPageState extends State<WithdrawAsingPage> {
 
   List? code;
   List? valuesHistory;
+  dynamic valueHistory;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,11 @@ class _WithdrawAsingPageState extends State<WithdrawAsingPage> {
           title: Text("Penarikan Uang Asing"),
         ),
         body: (code == null)
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: Text(
+                "Anda belum menukarkan uang rupiah ke asing",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ))
             : Container(
                 margin: EdgeInsets.only(left: 16, right: 16, top: 36),
                 child: ListView.builder(
@@ -72,9 +77,11 @@ class _WithdrawAsingPageState extends State<WithdrawAsingPage> {
 
   getHistory() async {
     ExchangeService().getHistroy().then(
-      (Map<String, dynamic>? value) {
+      (value) {
+        debugPrint("ini ya $value");
         debugPrint("ini value history ${value!.values.toList()[0]}");
         setState(() {
+          valueHistory = value;
           code = value.keys.toList();
           valuesHistory = value.values.toList();
         });

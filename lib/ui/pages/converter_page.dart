@@ -13,6 +13,9 @@ import 'package:ewallet_apps/blocs/currency_converter/currency_converter_event.d
 import 'package:ewallet_apps/blocs/currency_converter/currency_converter_state.dart';
 import 'package:ewallet_apps/ui/widgets/chart_widget.dart';
 
+import '../widgets/buttons.dart';
+import '../widgets/textformfield_outline.dart';
+
 class ConverterPage extends StatefulWidget {
   @override
   _ConverterPageState createState() => _ConverterPageState();
@@ -29,10 +32,14 @@ class _ConverterPageState extends State<ConverterPage>
 
   TextEditingController? _editingController;
   FocusNode? _focusNode;
+  final TextEditingController _amountController = TextEditingController();
+
+  dynamic base = "USD";
+  dynamic amount = "1";
 
   @override
   void initState() {
-    getInfoRates("USD", 1);
+    getInfoRates(base: base, amount: _amountController.text);
     getSymbols();
     _editingController = TextEditingController();
     _focusNode = FocusNode();
@@ -57,6 +64,7 @@ class _ConverterPageState extends State<ConverterPage>
           child: Container(
             padding: EdgeInsets.only(left: 20, right: 20, top: 40, bottom: 10),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 inputTextWidget(),
                 SizedBox(
@@ -93,6 +101,59 @@ class _ConverterPageState extends State<ConverterPage>
                   height: 20,
                 ),
                 // ChartWidget(),
+                Row(
+                  children: [
+                    Text("Info Kurs Berdasarkan : "),
+                    Text("$amount $base"),
+                  ],
+                ),
+
+                TextFormFieldOutline(
+                  title: "Isi Nominal",
+                  titleStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700),
+                  hintText: "Masukkan nominal",
+                  textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400),
+                  controller: _amountController,
+                  //keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nominal harus di isi';
+                    }
+                    /*if (Fzregex.hasMatch(value, FzPattern.phone)) {
+                          return 'No. Telepon tidak valid';
+                        }*/
+                    return null;
+                  },
+                  // focusedBorder: const OutlineInputBorder(
+                  //   borderSide: BorderSide(color: AppColor.colorPrimary),
+                  //   borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  // ),
+                ),
+                SizedBox(height: 16),
+                GestureDetector(
+                    onTap: _openCurrencyPickerDialogFrom2,
+                    child: fromCurrencyItemWidget()),
+                SizedBox(height: 24),
+
+                CustomFilledButton(
+                  title: 'Ganti',
+                  height: 38,
+                  width: 100,
+                  onPressed: () {
+                    getInfoRates(base: base, amount: _amountController.text);
+                    setState(() {
+                      amount = _amountController.text;
+                    });
+                  },
+                ),
+                SizedBox(height: 24),
+
                 (_infoRatesModel == null)
                     ? CircularProgressIndicator()
                     : ListView.builder(
@@ -168,7 +229,8 @@ class _ConverterPageState extends State<ConverterPage>
                             decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.circular(10), // radius of 10
-                                color: Colors.green // green as background color
+                                color: Color(
+                                    0xffE3E5FE) // green as background color
                                 ),
                             width: double.infinity,
                             padding: EdgeInsets.only(),
@@ -192,7 +254,7 @@ class _ConverterPageState extends State<ConverterPage>
   }
 
   InfoRatesModel? _infoRatesModel;
-  getInfoRates(base, amount) async {
+  getInfoRates({base, amount}) async {
     ConvertRateService().getInfoRates(base, amount).then((value) {
       if (value != null) {
         debugPrint("value rates ${value.rates}");
@@ -286,6 +348,26 @@ class _ConverterPageState extends State<ConverterPage>
           setState(() {
             _fromCurrencyCode = currency.code;
             _currencyName = currency.name;
+            base = currency.code.toString();
+          });
+        }
+      },
+    );
+  }
+
+  void _openCurrencyPickerDialogFrom2() {
+    showCurrencyPicker(
+      context: context,
+      showFlag: true,
+      showCurrencyName: true,
+      showCurrencyCode: true,
+      onSelect: (Currency currency) {
+        print('Select from currency: ${currency.name}');
+        print('Select from currency code: ${currency.code}');
+        print('Select from flag: ${currency.flag}');
+        if (mounted) {
+          setState(() {
+            base = currency.code.toString();
           });
         }
       },

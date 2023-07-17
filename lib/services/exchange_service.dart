@@ -36,7 +36,7 @@ class ExchangeService {
     }
   }
 
-  Future<Map<String, dynamic>?> getHistroy() async {
+  Future getHistroy() async {
     try {
       final token = await AuthService().getToken();
 
@@ -47,17 +47,14 @@ class ExchangeService {
         },
       );
 
-      debugPrint(res.body);
-      return jsonDecode(res.body);
+      debugPrint("ini history asing ${res.body}");
+      // final jsonResponse = jsonDecode(res.body) as List<dynamic>;
+      // if (res.body.isEmpty) {
+      //   return jsonResponse;
+      // } else if  {
 
-      // if (res.statusCode == 200) {
-      //   Map<String, dynamic> responseBody = jsonDecode(res.body);
-      //   BarcodeModel barcodes = BarcodeModel.fromJson(responseBody);
-
-      //   return barcodes;
-      // } else {
-      //   throw jsonDecode(res.body)['message'];
       // }
+      return jsonDecode(res.body);
     } catch (e) {
       print(e);
       rethrow;

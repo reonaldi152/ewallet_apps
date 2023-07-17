@@ -13,6 +13,7 @@ import 'package:ewallet_apps/ui/pages/transfer_amount_page.dart';
 import 'package:ewallet_apps/ui/pages/transfer_asing_page.dart';
 import 'package:ewallet_apps/ui/pages/transfer_asing_page.dart.dart';
 import 'package:ewallet_apps/ui/pages/withdraw_asing_page.dart';
+import 'package:ewallet_apps/ui/pages/withdraw_page.dart';
 import 'package:ewallet_apps/ui/widgets/home_latest_transaction_item.dart';
 import 'package:ewallet_apps/ui/widgets/home_service_item.dart';
 import 'package:ewallet_apps/ui/widgets/home_tips_item.dart';
@@ -168,6 +169,63 @@ class _HomePageState extends State<HomePage> {
                               MaterialPageRoute(
                                 builder: (context) => TransferAsingPage(),
                               ));
+                        },
+                        child: const Text("Asing")),
+                  ),
+                  // ),
+                ],
+              ),
+            ],
+          );
+        });
+  }
+
+  void _dialogWithdraw() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            title: Center(child: Text("Penarikan")),
+            content: Text("Ingin tarik mata uang asing atau rupiah"),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(purpleColor),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    WithdrawPage(balance: balance),
+                              ));
+                        },
+                        child: const Text("Rupiah")),
+                  ),
+
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(purpleColor),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WithdrawAsingPage()));
                         },
                         child: const Text("Asing")),
                   ),
@@ -680,10 +738,11 @@ class _HomePageState extends State<HomePage> {
                 iconUrl: 'assets/logo_penarikan.png',
                 title: 'Penarikan',
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => WithdrawAsingPage()));
+                  _dialogWithdraw();
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => WithdrawAsingPage()));
                 },
               ),
               HomeServiceItem(

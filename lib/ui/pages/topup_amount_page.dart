@@ -106,7 +106,7 @@ class _TopupAmountPageState extends State<TopupAmountPage> {
                 ),
                 Center(
                   child: Text(
-                    'Total Amount',
+                    'Isi Nominal',
                     style: whiteTextStyle.copyWith(
                       fontSize: 20,
                       fontWeight: semiBold,
@@ -240,33 +240,35 @@ class _TopupAmountPageState extends State<TopupAmountPage> {
                   height: 50,
                 ),
                 CustomFilledButton(
-                  title: 'Checkout Now',
+                  title: 'Lanjutkan',
                   onPressed: () async {
-                    if (await Navigator.pushNamed(context, '/pin') == true) {
-                      final authState = context.read<AuthBloc>().state;
-                      String pin = '';
-                      if (authState is AuthSuccess) {
-                        pin = authState.data.pin!;
-                      }
+                    if (int.parse(amountController.text.replaceAll('.', '')) <=
+                        10000) {
+                      showCustomSnackbar(
+                          context, "Harus melebihi 10000 rupiah");
+                    } else {
+                      if (await Navigator.pushNamed(context, '/pin') == true) {
+                        final authState = context.read<AuthBloc>().state;
+                        String pin = '';
+                        if (authState is AuthSuccess) {
+                          pin = authState.data.pin!;
+                        }
 
-                      context.read<TopupFormBloc>().add(
-                            TopupFormPost(
-                              widget.data.copyWith(
-                                pin: pin,
-                                amount:
-                                    amountController.text.replaceAll('.', ''),
+                        context.read<TopupFormBloc>().add(
+                              TopupFormPost(
+                                widget.data.copyWith(
+                                  pin: pin,
+                                  amount:
+                                      amountController.text.replaceAll('.', ''),
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                      }
                     }
                   },
                 ),
                 const SizedBox(
                   height: 25,
-                ),
-                CustomTextButton(
-                  title: 'Terms & Conditions',
-                  onPressed: () {},
                 ),
                 const SizedBox(
                   height: 40,

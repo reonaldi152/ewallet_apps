@@ -13,7 +13,7 @@ class TopupSuccessPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Top Up\nWallet Berhasil',
+              'Isi Saldo Berhasil',
               style: blackTextStyle.copyWith(
                 fontSize: 20,
                 fontWeight: semiBold,
@@ -24,7 +24,7 @@ class TopupSuccessPage extends StatelessWidget {
               height: 26,
             ),
             Text(
-              'Use the money wisely and\ngrow your finance',
+              'Gunakan uang dengan bijak dan\ntingkatkan keuangan Anda',
               style: greyTextStyle.copyWith(
                 fontSize: 16,
               ),
@@ -35,7 +35,7 @@ class TopupSuccessPage extends StatelessWidget {
             ),
             CustomFilledButton(
               width: 183,
-              title: 'Back to Home',
+              title: 'Kembali ke beranda',
               onPressed: () {
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/home', (route) => false);

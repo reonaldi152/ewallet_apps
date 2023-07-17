@@ -30,7 +30,11 @@ class _TransferBalanceAsingPageState extends State<TransferBalanceAsingPage> {
           title: Text("Transfer Uang Asing"),
         ),
         body: (code == null)
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(
+                child: Text(
+                "Anda belum menukarkan uang rupiah ke asing",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ))
             : Container(
                 margin: EdgeInsets.only(left: 16, right: 16, top: 36),
                 child: ListView.builder(
@@ -76,7 +80,7 @@ class _TransferBalanceAsingPageState extends State<TransferBalanceAsingPage> {
 
   getHistory() async {
     ExchangeService().getHistroy().then(
-      (Map<String, dynamic>? value) {
+      (value) {
         debugPrint("ini value history ${value!.values.toList()[0]}");
         setState(() {
           code = value.keys.toList();
