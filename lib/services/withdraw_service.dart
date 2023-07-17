@@ -38,27 +38,25 @@ class WithdrawService {
     }
   }
 
-  Future<Map<String, dynamic>?> getHistroy() async {
+  Future<Map<String, dynamic>?> postTransferAsing(
+      amount, symbols, country, pin, username) async {
     try {
       final token = await AuthService().getToken();
 
-      final res = await http.get(
-        Uri.parse('$baseUrl/users/exchange-currency/history'),
-        headers: {
-          'Authorization': token,
-        },
-      );
+      final res = await http
+          .post(Uri.parse('$baseUrl/international_transfers'), headers: {
+        'Authorization': token,
+      }, body: {
+        'amount': amount,
+        'symbols': symbols,
+        'country': country,
+        'pin': pin,
+        'send_to': username,
+      });
 
       debugPrint(res.body);
       return jsonDecode(res.body);
 
-      // if (res.statusCode == 200) {
-      //   Map<String, dynamic> responseBody = jsonDecode(res.body);
-      //   BarcodeModel barcodes = BarcodeModel.fromJson(responseBody);
-
-      //   return barcodes;
-      // } else {
-      //   throw jsonDecode(res.body)['message'];
       // }
     } catch (e) {
       print(e);

@@ -3,6 +3,7 @@ import 'package:ewallet_apps/models/transfer_form_model.dart';
 import 'package:ewallet_apps/models/user_model.dart';
 import 'package:ewallet_apps/shared/theme.dart';
 import 'package:ewallet_apps/ui/pages/transfer_amount_page.dart';
+import 'package:ewallet_apps/ui/pages/transfer_balance_asing_page.dart';
 import 'package:ewallet_apps/ui/widgets/buttons.dart';
 import 'package:ewallet_apps/ui/widgets/forms.dart';
 import 'package:ewallet_apps/ui/widgets/transfer_recent_user_item.dart';
@@ -13,14 +14,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/bloc/transaction_bloc.dart';
 import '../widgets/home_latest_transaction_item.dart';
 
-class TransferPage extends StatefulWidget {
-  const TransferPage({Key? key}) : super(key: key);
+class TransferAsingPage extends StatefulWidget {
+  const TransferAsingPage({Key? key}) : super(key: key);
 
   @override
-  State<TransferPage> createState() => _TransferPageState();
+  State<TransferAsingPage> createState() => _TransferAsingPageState();
 }
 
-class _TransferPageState extends State<TransferPage> {
+class _TransferAsingPageState extends State<TransferAsingPage> {
   final usernameController = TextEditingController(text: '');
   UserModel? selectedUser;
 
@@ -77,23 +78,6 @@ class _TransferPageState extends State<TransferPage> {
           const SizedBox(
             height: 80,
           ),
-          // if (selectedUser != null)
-          //   CustomFilledButton(
-          //     title: 'Continue',
-          //     onPressed: () {
-          //       Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //           builder: (context) => TransferAmountPage(
-          //             data: TransferFormModel(
-          //               sendTo: selectedUser?.username,
-          //             ),
-          //           ),
-          //         ),
-          //       );
-          //     },
-          //   ),
-
           const SizedBox(
             height: 50,
           ),
@@ -103,15 +87,15 @@ class _TransferPageState extends State<TransferPage> {
           ? Container(
               margin: const EdgeInsets.all(24),
               child: CustomFilledButton(
-                title: 'Continue',
+                title: 'Selanjutnya',
                 onPressed: () {
+                  debugPrint("ini username ${selectedUser?.username}");
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TransferAmountPage(
-                        data: TransferFormModel(
-                          sendTo: selectedUser?.username,
-                        ),
+                      builder: (context) => TransferBalanceAsingPage(
+                        username: selectedUser?.username,
                       ),
                     ),
                   );
@@ -148,15 +132,13 @@ class _TransferPageState extends State<TransferPage> {
                   children: state.users.map((user) {
                     return GestureDetector(
                       onTap: () {
-                        debugPrint("ini username ${selectedUser?.username}");
+                        debugPrint("ini username ${user.username}");
 
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => TransferAmountPage(
-                              data: TransferFormModel(
-                                sendTo: user.username,
-                              ),
+                            builder: (context) => TransferBalanceAsingPage(
+                              username: user.username,
                             ),
                           ),
                         );
