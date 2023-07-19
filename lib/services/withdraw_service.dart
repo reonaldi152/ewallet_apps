@@ -38,6 +38,34 @@ class WithdrawService {
     }
   }
 
+  Future<Map<String, dynamic>?> postWithdrawRupiah(amount, pin) async {
+    try {
+      final token = await AuthService().getToken();
+
+      final res = await http.post(Uri.parse('$baseUrl/withdraw'), headers: {
+        'Authorization': token,
+      }, body: {
+        'amount': amount,
+        'pin': pin,
+      });
+
+      debugPrint(res.body);
+      return jsonDecode(res.body);
+
+      // if (res.statusCode == 200) {
+      //   Map<String, dynamic> responseBody = jsonDecode(res.body);
+      //   BarcodeModel barcodes = BarcodeModel.fromJson(responseBody);
+
+      //   return barcodes;
+      // } else {
+      //   throw jsonDecode(res.body)['message'];
+      // }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<Map<String, dynamic>?> postTransferAsing(
       amount, symbols, country, pin, username) async {
     try {

@@ -1,3 +1,4 @@
+import 'package:ewallet_apps/ui/pages/pin_withdraw.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/helpers.dart';
@@ -21,7 +22,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         title: Text("Penarikan Saldo"),
       ),
       body: Container(
-        margin: EdgeInsets.only(left: 16),
+        margin: EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -76,6 +77,31 @@ class _WithdrawPageState extends State<WithdrawPage> {
               // ),
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ButtonStyle(
+            shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            backgroundColor: MaterialStatePropertyAll(Color(0xff7176EC)),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PinWithdraw(
+                  amount: _amountController.text,
+                ),
+              ),
+            );
+          },
+          child: Text("Selanjutnya"),
         ),
       ),
     );

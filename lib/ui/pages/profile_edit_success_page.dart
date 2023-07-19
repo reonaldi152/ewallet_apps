@@ -13,7 +13,7 @@ class ProfileEditSuccessPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Nice Update!',
+              'Profil telah diperbarui!',
               style: blackTextStyle.copyWith(
                 fontSize: 20,
                 fontWeight: semiBold,
@@ -24,7 +24,7 @@ class ProfileEditSuccessPage extends StatelessWidget {
               height: 26,
             ),
             Text(
-              'Your data is safe with\nour system',
+              'Data anda aman',
               style: greyTextStyle.copyWith(
                 fontSize: 16,
               ),

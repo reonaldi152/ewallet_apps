@@ -35,68 +35,73 @@ class _MoneyChangerPageState extends State<MoneyChangerPage> {
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 24),
-            Text(
-              "Saldo Rupiah Anda",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-            ),
-            SizedBox(height: 20),
-            Container(
-              margin: EdgeInsets.only(bottom: 5),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), // radius of 10
-                  color: Color(0xffE3E5FE) // green as background color
-                  ),
-              width: double.infinity,
-              padding: EdgeInsets.only(),
-              child: ListTile(
-                // leading: CircleAvatar(
-                //     backgroundImage:
-                //         AssetImage('assets/convert.png')),
-                title: Text("Rupiah"),
-                subtitle:
-                    Text(formatCurrency(num.parse(widget.balance)).toString()),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 24),
+              Text(
+                "Saldo Rupiah Anda",
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
               ),
-            ),
-            SizedBox(height: 15),
-            Text("Tukar ke Mata Uang"),
-            SizedBox(height: 20),
-            GestureDetector(
-                onTap: _openCurrencyPickerDialogTo,
-                child: toCurrencyItemWidget()),
-            SizedBox(height: 38),
-            (code != null)
-                ? Container(
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: Text("Saldo mata uang asing"))
-                : SizedBox(),
-            (code != null)
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: code?.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                                color: Color.fromARGB(255, 160, 166, 247))),
-                        padding: EdgeInsets.only(left: 8),
-                        child: ListTile(
-                          title: Text(code?[index]),
-                          subtitle:
-                              Text(valuesHistory![index]['amount'].toString()),
-                          trailing: Text(valuesHistory![index]['currency_code']
-                              .toString()),
-                        ),
-                      );
-                    },
-                  )
-                : SizedBox()
-          ],
+              SizedBox(height: 20),
+              Container(
+                margin: EdgeInsets.only(bottom: 5),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10), // radius of 10
+                    color: Color(0xffE3E5FE) // green as background color
+                    ),
+                width: double.infinity,
+                padding: EdgeInsets.only(),
+                child: ListTile(
+                  // leading: CircleAvatar(
+                  //     backgroundImage:
+                  //         AssetImage('assets/convert.png')),
+                  title: Text("Rupiah"),
+                  subtitle: Text(
+                      formatCurrency(num.parse(widget.balance)).toString()),
+                ),
+              ),
+              SizedBox(height: 15),
+              Text("Tukar ke Mata Uang"),
+              SizedBox(height: 20),
+              GestureDetector(
+                  onTap: _openCurrencyPickerDialogTo,
+                  child: toCurrencyItemWidget()),
+              SizedBox(height: 38),
+              (code != null)
+                  ? Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: Text("Saldo mata uang asing"))
+                  : SizedBox(),
+              (code != null)
+                  ? ListView.builder(
+                      physics: ScrollPhysics(),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: code?.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.only(bottom: 15),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  color: Color.fromARGB(255, 160, 166, 247))),
+                          padding: EdgeInsets.only(left: 8),
+                          child: ListTile(
+                            title: Text(code?[index]),
+                            subtitle: Text(
+                                valuesHistory![index]['amount'].toString()),
+                            trailing: Text(valuesHistory![index]
+                                    ['currency_code']
+                                .toString()),
+                          ),
+                        );
+                      },
+                    )
+                  : SizedBox()
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(

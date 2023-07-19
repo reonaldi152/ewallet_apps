@@ -22,6 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../blocs/barcode_blocs/barcode_blocs.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -61,45 +63,71 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
-                    width: 120,
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(purpleColor),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-
-                          scanBarcode()
-                              .then((value) => debugPrint("ini value $value"));
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TransferAmountPage(
-                                data: TransferFormModel(
-                                  sendTo: scanResultt.toString(),
-                                ),
+                  BlocListener<BarcodeScanCubit, BarcodeScanState>(
+                    listener: (context, state) {
+                      if (state == BarcodeScanState.success) {
+                        final scanResult =
+                            context.read<BarcodeScanCubit>().scanResult;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TransferAmountPage(
+                              data: TransferFormModel(
+                                sendTo: scanResult,
                               ),
                             ),
-                          );
-
-                          // if (scanResultt != null) {
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => TransferAmountPage(
-                          //         data: TransferFormModel(
-                          //           sendTo: scanResultt.toString(),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   );
-                          // }
+                          ),
+                        );
+                      }
+                    },
+                    child: SizedBox(
+                      width: 120,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.read<BarcodeScanCubit>().scanBarcode();
                         },
-                        child: const Text("scan")),
+                        child: Text('Scan'),
+                      ),
+                    ),
                   ),
+                  // SizedBox(
+                  //   width: 120,
+                  //   child: ElevatedButton(
+                  //       style: ButtonStyle(
+                  //         backgroundColor:
+                  //             MaterialStatePropertyAll(purpleColor),
+                  //       ),
+                  //       onPressed: () {
+                  //         Navigator.pop(context);
+
+                  //         scanBarcode();
+
+                  //         // Navigator.push(
+                  //         //   context,
+                  //         //   MaterialPageRoute(
+                  //         //     builder: (context) => TransferAmountPage(
+                  //         //       data: TransferFormModel(
+                  //         //         sendTo: scanResultt.toString(),
+                  //         //       ),
+                  //         //     ),
+                  //         //   ),
+                  //         // );
+
+                  //         // if (scanResultt != null) {
+                  //         //   Navigator.push(
+                  //         //     context,
+                  //         //     MaterialPageRoute(
+                  //         //       builder: (context) => TransferAmountPage(
+                  //         //         data: TransferFormModel(
+                  //         //           sendTo: scanResultt.toString(),
+                  //         //         ),
+                  //         //       ),
+                  //         //     ),
+                  //         //   );
+                  //         // }
+                  //       },
+                  //       child: const Text("scan")),
+                  // ),
 
                   SizedBox(
                     width: 120,
@@ -176,6 +204,77 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ],
+          );
+        });
+  }
+
+  void _dialogSaldo() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            title: Text(
+              "Saldo Anda",
+              style: blackTextStyle.copyWith(fontWeight: FontWeight.w700),
+            ),
+            content: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      if (state is AuthSuccess) {
+                        return Row(
+                          children: [
+                            Image.asset(
+                              'assets/img_wallet.png',
+                              width: 80,
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  state.data.cardNumber!.replaceAllMapped(
+                                      RegExp(r".{4}"),
+                                      (match) => "${match.group(0)} "),
+                                  style: blackTextStyle.copyWith(
+                                    fontSize: 16,
+                                    fontWeight: medium,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                Text(
+                                  state.data.name!,
+                                  style: greyTextStyle.copyWith(
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  formatCurrency(num.parse(state.data.balance))
+                                      .toString(),
+                                  style: greyTextStyle.copyWith(
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      }
+                      return Container();
+                    },
+                  ),
+                ],
+              ),
+            ),
           );
         });
   }
@@ -310,32 +409,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body:
-            // BlocBuilder<AuthBloc, AuthState>(
-            //   builder: (context, state) {
-            //     if (state is AuthSuccess) {
-            //       return ListView(
-            //         padding: const EdgeInsets.symmetric(
-            //           horizontal: 24,
-            //         ),
-            //         children: [
-            //           buildProfile(context),
-            //           buildWalletCard(),
-            //           buildLevel(),
-            //           buildServices(context),
-            //           buildLatestTransactions(),
-            //           buildSendAgain(),
-            //           buildFriendlyTips(),
-            //         ],
-            //       );
-            //     }
-
-            //     return const Center(
-            //       child: CircularProgressIndicator(),
-            //     );
-            //   },
-            // ),
-            ListView(
+        body: ListView(
           padding: const EdgeInsets.symmetric(
             horizontal: 24,
           ),
@@ -366,35 +440,14 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     Text(
-                //       'Selamat Datang',
-                //       style: greyTextStyle.copyWith(
-                //         fontSize: 16,
-                //       ),
-                //     ),
-                //     const SizedBox(
-                //       height: 2,
-                //     ),
-                //     Text(
-                //       state.data.username.toString(),
-                //       style: blackTextStyle.copyWith(
-                //         fontSize: 20,
-                //         fontWeight: semiBold,
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 Text(
                   state.data.username.toString(),
                   style: blackTextStyle.copyWith(
-                    fontSize: 20,
+                    fontSize: 12,
                     fontWeight: semiBold,
                   ),
                 ),
-                Image.asset('assets/text_mimopay.png', width: 64),
+                Image.asset('assets/text_mimopay.png', width: 76),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, '/profile');
@@ -443,73 +496,6 @@ class _HomePageState extends State<HomePage> {
         return Container();
       },
     );
-
-    // return Container(
-    //   margin: const EdgeInsets.only(
-    //     top: 40,
-    //   ),
-    //   child: Row(
-    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //     children: [
-    //       Column(
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         children: [
-    //           Text(
-    //             'Howdy,',
-    //             style: greyTextStyle.copyWith(
-    //               fontSize: 16,
-    //             ),
-    //           ),
-    //           const SizedBox(
-    //             height: 2,
-    //           ),
-    //           Text(
-    //             "reonaldi",
-    //             style: blackTextStyle.copyWith(
-    //               fontSize: 20,
-    //               fontWeight: semiBold,
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //       GestureDetector(
-    //         onTap: () {
-    //           Navigator.pushNamed(context, '/profile');
-    //         },
-    //         child: Container(
-    //           width: 60,
-    //           height: 60,
-    //           decoration: const BoxDecoration(
-    //             shape: BoxShape.circle,
-    //             image: DecorationImage(
-    //               image: AssetImage(
-    //                 'assets/img_profile.png',
-    //               ),
-    //             ),
-    //           ),
-    //           child: Align(
-    //             alignment: Alignment.topRight,
-    //             child: Container(
-    //               width: 16,
-    //               height: 16,
-    //               decoration: BoxDecoration(
-    //                 shape: BoxShape.circle,
-    //                 color: whiteColor,
-    //               ),
-    //               child: Center(
-    //                 child: Icon(
-    //                   Icons.check_circle,
-    //                   color: greenColor,
-    //                   size: 14,
-    //                 ),
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 
   Widget buildWalletCard() {
@@ -517,58 +503,94 @@ class _HomePageState extends State<HomePage> {
       builder: (context, state) {
         if (state is AuthSuccess) {
           balance = state.data.balance;
-          return Container(
-            width: double.infinity,
-            height: 220,
-            margin: const EdgeInsets.only(
-              top: 30,
-            ),
-            padding: const EdgeInsets.all(30),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(28),
-              image: const DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(
-                  'assets/img_bg_card.png',
+          return GestureDetector(
+            onTap: () => _dialogSaldo(),
+            child: Container(
+              width: double.infinity,
+              height: 220,
+              margin: const EdgeInsets.only(
+                top: 30,
+              ),
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(28),
+                image: const DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                    'assets/img_bg_card.png',
+                  ),
                 ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  state.data.name!,
-                  style: whiteTextStyle.copyWith(
-                    fontSize: 18,
-                    fontWeight: medium,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    state.data.name!,
+                    style: whiteTextStyle.copyWith(
+                      fontSize: 18,
+                      fontWeight: medium,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 28,
-                ),
-                Text(
-                  '**** **** **** ${state.data.cardNumber!.substring(12, 16)}',
-                  style: whiteTextStyle.copyWith(
-                    fontSize: 18,
-                    fontWeight: medium,
-                    letterSpacing: 6,
+                  const SizedBox(
+                    height: 28,
                   ),
-                ),
-                const SizedBox(
-                  height: 21,
-                ),
-                Text(
-                  'Saldo',
-                  style: whiteTextStyle,
-                ),
-                Text(
-                  formatCurrency(num.parse(state.data.balance)).toString(),
-                  style: whiteTextStyle.copyWith(
-                    fontSize: 24,
-                    fontWeight: semiBold,
+                  Text(
+                    '**** **** **** ${state.data.cardNumber!.substring(12, 16)}',
+                    style: whiteTextStyle.copyWith(
+                      fontSize: 18,
+                      fontWeight: medium,
+                      letterSpacing: 6,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    height: 21,
+                  ),
+                  // GestureDetector(
+                  //   onTap: () => _dialogSaldo(),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Text(
+                  //         'Saldo',
+                  //         style: whiteTextStyle,
+                  //       ),
+                  //       Text(
+                  //         formatCurrency(num.parse(state.data.balance))
+                  //             .toString(),
+                  //         style: whiteTextStyle.copyWith(
+                  //           fontSize: 24,
+                  //           fontWeight: semiBold,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  Text(
+                    'Saldo',
+                    style: whiteTextStyle,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        formatCurrency(num.parse(state.data.balance))
+                            .toString(),
+                        style: whiteTextStyle.copyWith(
+                          fontSize: 24,
+                          fontWeight: semiBold,
+                        ),
+                      ),
+                      Text(
+                        "Klik Saldoku >>",
+                        style: whiteTextStyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: semiBold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         }
@@ -746,7 +768,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               HomeServiceItem(
-                iconUrl: 'assets/exchange-rate.png',
+                iconUrl: 'assets/kurs.png',
                 title: 'Info Kurs',
                 color: Color(0xffABAFF9),
                 onTap: () => Navigator.push(
@@ -901,8 +923,8 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
 
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return Center(
+                  child: Container(),
                 );
               },
             ),
@@ -1007,26 +1029,26 @@ class _HomePageState extends State<HomePage> {
 
   String? scanResultt;
 
-  Future scanBarcode() async {
-    String scanResult;
+  // Future scanBarcode() async {
+  //   String scanResult;
 
-    try {
-      scanResult = await FlutterBarcodeScanner.scanBarcode(
-        "#ff6666",
-        "Cancel",
-        true,
-        ScanMode.QR,
-      );
-    } catch (e) {
-      scanResult = 'Failed to get platform version';
-      debugPrint("ini error scan $e");
-    }
+  //   try {
+  //     scanResult = await FlutterBarcodeScanner.scanBarcode(
+  //       "#ff6666",
+  //       "Cancel",
+  //       true,
+  //       ScanMode.QR,
+  //     );
+  //   } catch (e) {
+  //     scanResult = 'Failed to get platform version';
+  //     debugPrint("ini error scan $e");
+  //   }
 
-    if (!mounted) return;
-    setState(() {
-      this.scanResultt = scanResult;
-    });
-  }
+  //   if (!mounted) return;
+  //   setState(() {
+  //     this.scanResultt = scanResult;
+  //   });
+  // }
 }
 
 class MoreDialog extends StatelessWidget {

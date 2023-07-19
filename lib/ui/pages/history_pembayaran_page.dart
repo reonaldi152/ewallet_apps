@@ -21,46 +21,49 @@ class HistoryPembayaran extends StatelessWidget {
         ),
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Transaksi terakhir',
-                style: blackTextStyle.copyWith(
-                  fontSize: 16,
-                  fontWeight: semiBold,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(22),
-                margin: const EdgeInsets.only(
-                  top: 14,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: whiteColor,
-                ),
-                child: BlocProvider(
-                  create: (context) => TransactionBloc()..add(TransactionGet()),
-                  child: BlocBuilder<TransactionBloc, TransactionState>(
-                    builder: (context, state) {
-                      if (state is TransactionSuccess) {
-                        return Column(
-                          children: state.transactions.map((transaction) {
-                            return HomeLatestTransactionItem(
-                                transaction: transaction);
-                          }).toList(),
-                        );
-                      }
-
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Transaksi terakhir',
+                  style: blackTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: semiBold,
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  padding: const EdgeInsets.all(22),
+                  margin: const EdgeInsets.only(
+                    top: 14,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: whiteColor,
+                  ),
+                  child: BlocProvider(
+                    create: (context) =>
+                        TransactionBloc()..add(TransactionGet()),
+                    child: BlocBuilder<TransactionBloc, TransactionState>(
+                      builder: (context, state) {
+                        if (state is TransactionSuccess) {
+                          return Column(
+                            children: state.transactions.map((transaction) {
+                              return HomeLatestTransactionItem(
+                                  transaction: transaction);
+                            }).toList(),
+                          );
+                        }
+
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

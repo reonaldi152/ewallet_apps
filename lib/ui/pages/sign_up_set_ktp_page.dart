@@ -59,7 +59,7 @@ class _SignUpSetKtpPageState extends State<SignUpSetKtpPage> {
           //     ),
           //   ),
           // ),
-          SizedBox(height: 170),
+          const SizedBox(height: 170),
           Text(
             'Verifikasi Akun\nanda',
             style: blackTextStyle.copyWith(

@@ -1,10 +1,19 @@
 import 'package:ewallet_apps/shared/theme.dart';
 import 'package:ewallet_apps/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:ewallet_apps/blocs/auth/auth_bloc.dart';
+import '../../models/sign_up_form_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignUpSuccessPage extends StatelessWidget {
-  const SignUpSuccessPage({Key? key}) : super(key: key);
+class SignUpSuccessPage extends StatefulWidget {
+  final SignUpFormModel data;
+  const SignUpSuccessPage({Key? key, required this.data}) : super(key: key);
 
+  @override
+  State<SignUpSuccessPage> createState() => _SignUpSuccessPageState();
+}
+
+class _SignUpSuccessPageState extends State<SignUpSuccessPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +46,9 @@ class SignUpSuccessPage extends StatelessWidget {
               width: 183,
               title: 'Get Started',
               onPressed: () {
+                context.read<AuthBloc>().add(
+                      AuthRegister(widget.data),
+                    );
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/home', (route) => false);
               },

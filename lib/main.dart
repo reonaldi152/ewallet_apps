@@ -30,6 +30,7 @@ import 'package:ewallet_apps/blocs/currency_converter/currency_converter_bloc.da
 import 'package:ewallet_apps/blocs/currency_rate/bloc.dart';
 import 'package:ewallet_apps/blocs/delegate.dart';
 import 'package:ewallet_apps/repository/repository.dart';
+import 'blocs/barcode_blocs/barcode_blocs.dart';
 import 'blocs/user/user_bloc.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -72,6 +73,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<CurrencyBaseBloc>(
           create: (_) => CurrencyBaseBloc(Repository()),
         ),
+        BlocProvider(
+          create: (context) => BarcodeScanCubit(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -95,7 +99,7 @@ class MyApp extends StatelessWidget {
           '/onboarding': (context) => const OnboardingPage(),
           '/sign-in': (context) => const SignInPage(),
           '/sign-up': (context) => const SignUpPage(),
-          '/sign-up-success': (context) => const SignUpSuccessPage(),
+          // '/sign-up-success': (context) => SignUpSuccessPage(),
           '/home': (context) => const HomePage(),
           '/profile': (context) => const ProfilePage(),
           '/pin': (context) => const PinPage(),

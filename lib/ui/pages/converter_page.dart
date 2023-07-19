@@ -425,7 +425,7 @@ class _ConverterPageState extends State<ConverterPage>
               )
             ]),
         child: Text(
-          "Go",
+          "Tukar",
           style: TextStyle(fontSize: 16, color: Colors.white),
         ),
       ),
@@ -506,7 +506,7 @@ class _ConverterPageState extends State<ConverterPage>
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
-            hintText: "Amount e.g 250",
+            hintText: "Masukkan nominal",
             border: InputBorder.none,
             hintStyle: TextStyle(fontSize: 25)),
       ),

@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:ewallet_apps/models/sign_up_form_model.dart';
 import 'package:ewallet_apps/shared/theme.dart';
+import 'package:ewallet_apps/ui/pages/sign_up_success_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ewallet_apps/blocs/auth/auth_bloc.dart';
 import 'package:ewallet_apps/ui/pages/sign_up_set_ktp_page.dart';
 // import 'package:ewallet_apps/ui/pages/sign_up_set_ktp_page.dart';
 import 'package:ewallet_apps/ui/widgets/buttons.dart';
@@ -149,10 +152,14 @@ class _SignUpSetProfilePageState extends State<SignUpSetProfilePage> {
                         ),
                       );
                     } else {
+                      // context.read<AuthBloc>().add(
+                      //       AuthRegister(widget.data),
+                      //     );
+                      // Navigator.pushNamed(context, '/sign-up-success');
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SignUpSetKtpPage(
+                          builder: (context) => SignUpSuccessPage(
                             data: widget.data.copyWith(
                               profilePicture: selectedImage == null
                                   ? null
