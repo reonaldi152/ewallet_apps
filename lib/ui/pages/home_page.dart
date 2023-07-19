@@ -7,6 +7,7 @@ import 'package:ewallet_apps/shared/helpers.dart';
 import 'package:ewallet_apps/shared/theme.dart';
 import 'package:ewallet_apps/ui/pages/barcode_page.dart';
 import 'package:ewallet_apps/ui/pages/converter_page.dart';
+import 'package:ewallet_apps/ui/pages/lihat_saldo_page.dart';
 import 'package:ewallet_apps/ui/pages/money_changer_home.dart';
 import 'package:ewallet_apps/ui/pages/money_changer_page.dart';
 import 'package:ewallet_apps/ui/pages/transfer_amount_page.dart';
@@ -504,7 +505,11 @@ class _HomePageState extends State<HomePage> {
         if (state is AuthSuccess) {
           balance = state.data.balance;
           return GestureDetector(
-            onTap: () => _dialogSaldo(),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LihatSaldoPage(),
+                )),
             child: Container(
               width: double.infinity,
               height: 220,
