@@ -91,44 +91,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 120,
-                  //   child: ElevatedButton(
-                  //       style: ButtonStyle(
-                  //         backgroundColor:
-                  //             MaterialStatePropertyAll(purpleColor),
-                  //       ),
-                  //       onPressed: () {
-                  //         Navigator.pop(context);
-
-                  //         scanBarcode();
-
-                  //         // Navigator.push(
-                  //         //   context,
-                  //         //   MaterialPageRoute(
-                  //         //     builder: (context) => TransferAmountPage(
-                  //         //       data: TransferFormModel(
-                  //         //         sendTo: scanResultt.toString(),
-                  //         //       ),
-                  //         //     ),
-                  //         //   ),
-                  //         // );
-
-                  //         // if (scanResultt != null) {
-                  //         //   Navigator.push(
-                  //         //     context,
-                  //         //     MaterialPageRoute(
-                  //         //       builder: (context) => TransferAmountPage(
-                  //         //         data: TransferFormModel(
-                  //         //           sendTo: scanResultt.toString(),
-                  //         //         ),
-                  //         //       ),
-                  //         //     ),
-                  //         //   );
-                  //         // }
-                  //       },
-                  //       child: const Text("scan")),
-                  // ),
 
                   SizedBox(
                     width: 120,
@@ -381,20 +343,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 label: 'History',
               ),
-              // BottomNavigationBarItem(
-              //   icon: Image.asset(
-              //     'assets/ic_statistic.png',
-              //     width: 20,
-              //   ),
-              //   label: 'Statistic',
-              // ),
-              // BottomNavigationBarItem(
-              //   icon: Image.asset(
-              //     'assets/ic_reward.png',
-              //     width: 20,
-              //   ),
-              //   label: 'Reward',
-              // ),
             ],
           ),
         ),
@@ -404,29 +352,51 @@ class _HomePageState extends State<HomePage> {
           },
           backgroundColor: purpleColor,
           child: Image.asset(
-            // 'assets/ic_plus_circle.png',
             'assets/pay.png',
             width: 24,
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: ListView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 24,
+        body: RefreshIndicator(
+          onRefresh: _handleRefresh,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+            ),
+            children: [
+              buildProfile(context),
+              buildWalletCard(),
+              // buildLevel(),
+              buildServices(context),
+              // buildLatestTransactions(),
+              buildSendAgain(),
+              // buildFriendlyTips(),
+              SizedBox(height: 30)
+            ],
           ),
-          children: [
-            buildProfile(context),
-            buildWalletCard(),
-            // buildLevel(),
-            buildServices(context),
-            // buildLatestTransactions(),
-            buildSendAgain(),
-            // buildFriendlyTips(),
-            SizedBox(height: 30)
-          ],
         ),
       ),
     );
+  }
+
+  Future<void> _handleRefresh() async {
+    await Future.delayed(Duration(seconds: 1));
+
+    setState(() {});
+    BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        dynamic saldoku;
+        if (state is AuthSuccess) {
+          debugPrint("ini yaa gess ${state.data.balance}");
+          setState(() {
+            saldoku = state.data.balance;
+          });
+        }
+
+        return saldoku;
+      },
+    );
+    // context.read<AuthBloc>().add(AuthUpdateBalance(amount));
   }
 
   Widget buildProfile(BuildContext context) {
@@ -503,6 +473,8 @@ class _HomePageState extends State<HomePage> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is AuthSuccess) {
+          final updatedBalance = state.data.balance;
+          debugPrint("ini yaa $updatedBalance");
           balance = state.data.balance;
           return GestureDetector(
             onTap: () => Navigator.push(
@@ -512,7 +484,7 @@ class _HomePageState extends State<HomePage> {
                 )),
             child: Container(
               width: double.infinity,
-              height: 220,
+              height: 240,
               margin: const EdgeInsets.only(
                 top: 30,
               ),
@@ -526,75 +498,57 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    state.data.name!,
-                    style: whiteTextStyle.copyWith(
-                      fontSize: 18,
-                      fontWeight: medium,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 28,
-                  ),
-                  Text(
-                    '**** **** **** ${state.data.cardNumber!.substring(12, 16)}',
-                    style: whiteTextStyle.copyWith(
-                      fontSize: 18,
-                      fontWeight: medium,
-                      letterSpacing: 6,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 21,
-                  ),
-                  // GestureDetector(
-                  //   onTap: () => _dialogSaldo(),
-                  //   child: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Text(
-                  //         'Saldo',
-                  //         style: whiteTextStyle,
-                  //       ),
-                  //       Text(
-                  //         formatCurrency(num.parse(state.data.balance))
-                  //             .toString(),
-                  //         style: whiteTextStyle.copyWith(
-                  //           fontSize: 24,
-                  //           fontWeight: semiBold,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  Text(
-                    'Saldo',
-                    style: whiteTextStyle,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        formatCurrency(num.parse(state.data.balance))
-                            .toString(),
-                        style: whiteTextStyle.copyWith(
-                          fontSize: 24,
-                          fontWeight: semiBold,
-                        ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      state.data.name!,
+                      style: whiteTextStyle.copyWith(
+                        fontSize: 18,
+                        fontWeight: medium,
                       ),
-                      Text(
-                        "Klik Saldoku >>",
-                        style: whiteTextStyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: semiBold,
-                        ),
+                    ),
+                    const SizedBox(
+                      height: 28,
+                    ),
+                    Text(
+                      '**** **** **** ${state.data.cardNumber!.substring(12, 16)}',
+                      style: whiteTextStyle.copyWith(
+                        fontSize: 18,
+                        fontWeight: medium,
+                        letterSpacing: 6,
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    const SizedBox(
+                      height: 21,
+                    ),
+                    Text(
+                      'Saldo',
+                      style: whiteTextStyle,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          formatCurrency(num.parse(state.data.balance))
+                              .toString(),
+                          style: whiteTextStyle.copyWith(
+                            fontSize: 24,
+                            fontWeight: semiBold,
+                          ),
+                        ),
+                        Text(
+                          "Klik Saldoku >>",
+                          style: whiteTextStyle.copyWith(
+                            fontSize: 14,
+                            fontWeight: semiBold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -603,61 +557,6 @@ class _HomePageState extends State<HomePage> {
         return Container();
       },
     );
-
-    // return Container(
-    //   width: double.infinity,
-    //   height: 220,
-    //   margin: const EdgeInsets.only(
-    //     top: 30,
-    //   ),
-    //   padding: const EdgeInsets.all(30),
-    //   decoration: BoxDecoration(
-    //     borderRadius: BorderRadius.circular(28),
-    //     image: const DecorationImage(
-    //       fit: BoxFit.cover,
-    //       image: AssetImage(
-    //         'assets/img_bg_card.png',
-    //       ),
-    //     ),
-    //   ),
-    //   child: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       Text(
-    //         "reonaldi",
-    //         style: whiteTextStyle.copyWith(
-    //           fontSize: 18,
-    //           fontWeight: medium,
-    //         ),
-    //       ),
-    //       const SizedBox(
-    //         height: 28,
-    //       ),
-    //       Text(
-    //         '**** **** **** 1280',
-    //         style: whiteTextStyle.copyWith(
-    //           fontSize: 18,
-    //           fontWeight: medium,
-    //           letterSpacing: 6,
-    //         ),
-    //       ),
-    //       const SizedBox(
-    //         height: 21,
-    //       ),
-    //       Text(
-    //         'Balance',
-    //         style: whiteTextStyle,
-    //       ),
-    //       Text(
-    //         formatCurrency(12500),
-    //         style: whiteTextStyle.copyWith(
-    //           fontSize: 24,
-    //           fontWeight: semiBold,
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 
   Widget buildLevel() {

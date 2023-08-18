@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 final _baseUrl = "https://api.exchangerate.host";
 
 dynamic symbols =
-    "AUD,BND,CAD,CHF,CNH,CNY,DKK,EUR,GBP,HKD,JPY,KRW,KWD,LAK,MYR,NOK,NZD,PGK,PHP,SAR,SEK,SGD,THB,USD,VND";
+    "AUD,BND,CAD,CHF,CNH,CNY,DKK,EUR,GBP,HKD,JPY,KRW,KWD,LAK,MYR,NOK,NZD,PGK,PHP,SAR,SEK,SGD,THB,USD,VND,IDR";
 
 class ConvertRateService {
   Future<InfoRatesModel> getInfoRates(base, amount) async {
