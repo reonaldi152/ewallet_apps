@@ -22,8 +22,12 @@ import 'package:ewallet_apps/ui/widgets/home_user_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:http/http.dart' as http;
 import '../../blocs/barcode_blocs/barcode_blocs.dart';
+import '../../models/user_model.dart';
+import '../../services/auth_service.dart';
+import '../../services/user_service.dart';
+import '../../shared/shared_values.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -34,7 +38,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
-  dynamic balance;
+  dynamic balanceKu;
 
   void onBottomNavItemTapped(int index) {
     setState(() {
@@ -269,7 +273,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    WithdrawPage(balance: balance),
+                                    WithdrawPage(balance: balanceKu),
                               ));
                         },
                         child: const Text("Rupiah")),
@@ -379,23 +383,66 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // Future getUsers() async {
+  //   try {
+  //     final token = await AuthService().getToken();
+
+  //     final res = await http.get(
+  //       Uri.parse('$baseUrl/users'),
+  //       headers: {
+  //         'Authorization': token,
+  //       },
+  //     );
+
+  //     print(res.body);
+
+  //     // if (res.statusCode == 200) {
+  //     //   List<UserModel> users = List<UserModel>.from(
+  //     //     jsonDecode(res.body)['data'].map(
+  //     //       (user) => UserModel.fromJson(user),
+  //     //     ),
+  //     //   ).toList();
+
+  //     //   return users;
+  //     // }
+
+  //     // throw jsonDecode(res.body)['message'];
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
+
   Future<void> _handleRefresh() async {
     await Future.delayed(Duration(seconds: 1));
 
-    setState(() {});
-    BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        dynamic saldoku;
-        if (state is AuthSuccess) {
-          debugPrint("ini yaa gess ${state.data.balance}");
-          setState(() {
-            saldoku = state.data.balance;
-          });
-        }
+    try {
+      List<UserModel> users = await UserService().getUsers();
 
-        return saldoku;
-      },
-    );
+      for (UserModel user in users) {
+        debugPrint('Nama: ${user.name}');
+        debugPrint('Balance: ${user.balance}');
+        debugPrint('---');
+        setState(() {
+          balanceKu = user.balance;
+        });
+      }
+    } catch (e) {
+      debugPrint('Terjadi kesalahan: $e');
+    }
+
+    // BlocBuilder<AuthBloc, AuthState>(
+    //   builder: (context, state) {
+    //     dynamic saldoku;
+    //     if (state is AuthSuccess) {
+    //       debugPrint("ini yaa gess ${state.data.balance}");
+    //       setState(() {
+    //         saldoku = state.data.balance;
+    //       });
+    //     }
+
+    //     return saldoku;
+    //   },
+    // );
     // context.read<AuthBloc>().add(AuthUpdateBalance(amount));
   }
 
@@ -475,7 +522,7 @@ class _HomePageState extends State<HomePage> {
         if (state is AuthSuccess) {
           final updatedBalance = state.data.balance;
           debugPrint("ini yaa $updatedBalance");
-          balance = state.data.balance;
+          // balance = state.data.balance;
           return GestureDetector(
             onTap: () => Navigator.push(
                 context,
@@ -530,9 +577,16 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // Text(
+                        //   formatCurrency(num.parse(state.data.balance))
+                        //       .toString(),
+                        //   style: whiteTextStyle.copyWith(
+                        //     fontSize: 24,
+                        //     fontWeight: semiBold,
+                        //   ),
+                        // ),
                         Text(
-                          formatCurrency(num.parse(state.data.balance))
-                              .toString(),
+                          formatCurrency(num.parse(balanceKu)).toString(),
                           style: whiteTextStyle.copyWith(
                             fontSize: 24,
                             fontWeight: semiBold,
@@ -655,7 +709,7 @@ class _HomePageState extends State<HomePage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => MoneyChangerPage(
-                              balance: balance,
+                              balance: balanceKu,
                             )),
                   );
                 },
@@ -680,16 +734,6 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (context) => ConverterPage()),
                 ),
               ),
-              // HomeServiceItem(
-              //   iconUrl: 'assets/ic_more.png',
-              //   title: 'More',
-              //   onTap: () {
-              //     showDialog(
-              //       context: context,
-              //       builder: (context) => const MoreDialog(),
-              //     );
-              //   },
-              // ),
             ],
           ),
         ],
@@ -740,40 +784,6 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-            // child: Column(
-            //   children: [
-            //     HomeLatestTransactionItem(
-            //       iconUrl: 'assets/ic_transaction_cat1.png',
-            //       title: 'Top Up',
-            //       time: 'Yesterday',
-            //       value: '+ ${formatCurrency(450000, symbol: ' ')}',
-            //     ),
-            //     HomeLatestTransactionItem(
-            //       iconUrl: 'assets/ic_transaction_cat2.png',
-            //       title: 'Cashback',
-            //       time: 'Sep 11',
-            //       value: '+ ${formatCurrency(22000, symbol: ' ')}',
-            //     ),
-            //     HomeLatestTransactionItem(
-            //       iconUrl: 'assets/ic_transaction_cat3.png',
-            //       title: 'Withdraw',
-            //       time: 'Sep 2',
-            //       value: '+ ${formatCurrency(5000, symbol: ' ')}',
-            //     ),
-            //     HomeLatestTransactionItem(
-            //       iconUrl: 'assets/ic_transaction_cat4.png',
-            //       title: 'Transfer',
-            //       time: 'Aug 27',
-            //       value: '+ ${formatCurrency(123500, symbol: ' ')}',
-            //     ),
-            //     HomeLatestTransactionItem(
-            //       iconUrl: 'assets/ic_transaction_cat5.png',
-            //       title: 'Electric',
-            //       time: 'Aug 27',
-            //       value: '+ ${formatCurrency(12500000, symbol: ' ')}',
-            //     ),
-            //   ],
-            // ),
           ),
         ],
       ),
@@ -833,29 +843,6 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-          // SingleChildScrollView(
-          //   scrollDirection: Axis.horizontal,
-          //   child: Row(
-          //     children: [
-          //       HomeUserItem(
-          //         imageUrl: 'assets/img_friend1.png',
-          //         username: 'yuanita',
-          //       ),
-          //       HomeUserItem(
-          //         imageUrl: 'assets/img_friend2.png',
-          //         username: 'jani',
-          //       ),
-          //       HomeUserItem(
-          //         imageUrl: 'assets/img_friend3.png',
-          //         username: 'urip',
-          //       ),
-          //       HomeUserItem(
-          //         imageUrl: 'assets/img_friend4.png',
-          //         username: 'masa',
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );
@@ -900,59 +887,12 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-          // Wrap(
-          //   spacing: 17,
-          //   runSpacing: 18,
-          //   children: [
-          //     HomeTipsItem(
-          //       imageUrl: 'assets/img_tips1.png',
-          //       title: 'Best tips for using a credit card',
-          //       url: '',
-          //     ),
-          //     HomeTipsItem(
-          //       imageUrl: 'assets/img_tips2.png',
-          //       title: 'Spot the good pie of finance model',
-          //       url: '',
-          //     ),
-          //     HomeTipsItem(
-          //       imageUrl: 'assets/img_tips3.png',
-          //       title: 'Great hack to get better advices',
-          //       url: '',
-          //     ),
-          //     HomeTipsItem(
-          //       imageUrl: 'assets/img_tips4.png',
-          //       title: 'Save more penny buy this instead',
-          //       url: '',
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );
   }
 
   String? scanResultt;
-
-  // Future scanBarcode() async {
-  //   String scanResult;
-
-  //   try {
-  //     scanResult = await FlutterBarcodeScanner.scanBarcode(
-  //       "#ff6666",
-  //       "Cancel",
-  //       true,
-  //       ScanMode.QR,
-  //     );
-  //   } catch (e) {
-  //     scanResult = 'Failed to get platform version';
-  //     debugPrint("ini error scan $e");
-  //   }
-
-  //   if (!mounted) return;
-  //   setState(() {
-  //     this.scanResultt = scanResult;
-  //   });
-  // }
 }
 
 class MoreDialog extends StatelessWidget {

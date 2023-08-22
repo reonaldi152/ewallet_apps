@@ -63,4 +63,33 @@ class UserService {
       rethrow;
     }
   }
+
+  Future<List<UserModel>> getUsers() async {
+    try {
+      final token = await AuthService().getToken();
+
+      final res = await http.get(
+        Uri.parse('$baseUrl/transfer_histories'),
+        headers: {
+          'Authorization': token,
+        },
+      );
+
+      print(res.body);
+
+      if (res.statusCode == 200) {
+        List<UserModel> users = List<UserModel>.from(
+          jsonDecode(res.body)['data'].map(
+            (user) => UserModel.fromJson(user),
+          ),
+        ).toList();
+
+        return users;
+      }
+
+      throw jsonDecode(res.body)['message'];
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
