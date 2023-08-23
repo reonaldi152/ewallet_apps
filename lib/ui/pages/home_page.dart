@@ -13,6 +13,7 @@ import 'package:ewallet_apps/ui/pages/money_changer_page.dart';
 import 'package:ewallet_apps/ui/pages/transfer_amount_page.dart';
 import 'package:ewallet_apps/ui/pages/transfer_asing_page.dart';
 import 'package:ewallet_apps/ui/pages/transfer_asing_page.dart.dart';
+import 'package:ewallet_apps/ui/pages/transfer_balance_asing_page.dart';
 import 'package:ewallet_apps/ui/pages/withdraw_asing_page.dart';
 import 'package:ewallet_apps/ui/pages/withdraw_page.dart';
 import 'package:ewallet_apps/ui/widgets/home_latest_transaction_item.dart';
@@ -39,6 +40,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
   dynamic balanceKu;
+  dynamic balance;
 
   void onBottomNavItemTapped(int index) {
     setState(() {
@@ -71,24 +73,27 @@ class _HomePageState extends State<HomePage> {
                   BlocListener<BarcodeScanCubit, BarcodeScanState>(
                     listener: (context, state) {
                       if (state == BarcodeScanState.success) {
+                        // Navigator.pop(context);
                         final scanResult =
                             context.read<BarcodeScanCubit>().scanResult;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TransferAmountPage(
-                              data: TransferFormModel(
-                                sendTo: scanResult,
-                              ),
-                            ),
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => TransferAmountPage(
+                        //       data: TransferFormModel(
+                        //         sendTo: scanResult,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // );
+                        _dialogPilihanPayment(username: scanResult);
                       }
                     },
                     child: SizedBox(
                       width: 120,
                       child: ElevatedButton(
                         onPressed: () {
+                          // Navigator.pop(context);
                           context.read<BarcodeScanCubit>().scanBarcode();
                         },
                         child: Text('Scan'),
@@ -113,6 +118,67 @@ class _HomePageState extends State<HomePage> {
                               ));
                         },
                         child: const Text("barcode")),
+                  ),
+                  // ),
+                ],
+              ),
+            ],
+          );
+        });
+  }
+
+  void _dialogPilihanPayment({username}) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            title: Text("Pembayaran Rupiah atau Asing"),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TransferAmountPage(
+                              data: TransferFormModel(
+                                sendTo: username,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text('Rupiah'),
+                    ),
+                  ),
+
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(purpleColor),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TransferBalanceAsingPage(
+                                username: username,
+                              ),
+                            ),
+                          );
+                        },
+                        child: const Text("Asing")),
                   ),
                   // ),
                 ],
@@ -273,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    WithdrawPage(balance: balanceKu),
+                                    WithdrawPage(balance: balanceKu ?? balance),
                               ));
                         },
                         child: const Text("Rupiah")),
@@ -522,7 +588,7 @@ class _HomePageState extends State<HomePage> {
         if (state is AuthSuccess) {
           final updatedBalance = state.data.balance;
           debugPrint("ini yaa $updatedBalance");
-          // balance = state.data.balance;
+          balance = state.data.balance;
           return GestureDetector(
             onTap: () => Navigator.push(
                 context,
@@ -586,7 +652,8 @@ class _HomePageState extends State<HomePage> {
                         //   ),
                         // ),
                         Text(
-                          formatCurrency(num.parse(balanceKu)).toString(),
+                          formatCurrency(num.parse(balanceKu ?? balance))
+                              .toString(),
                           style: whiteTextStyle.copyWith(
                             fontSize: 24,
                             fontWeight: semiBold,
