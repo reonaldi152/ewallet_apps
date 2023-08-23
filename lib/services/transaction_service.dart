@@ -4,6 +4,7 @@ import 'package:ewallet_apps/models/data_plan_form_model.dart';
 import 'package:ewallet_apps/models/operator_card_model.dart';
 import 'package:ewallet_apps/models/payment_method_model.dart';
 import 'package:ewallet_apps/models/topup_form_model.dart';
+import 'package:ewallet_apps/models/transaction_model%20copy.dart';
 import 'package:ewallet_apps/models/transaction_model.dart';
 import 'package:ewallet_apps/models/transfer_form_model.dart';
 import 'package:ewallet_apps/services/auth_service.dart';
@@ -158,6 +159,36 @@ class TransactionService {
         List<TransactionModel> transactions = List<TransactionModel>.from(
           jsonDecode(res.body)['data'].map(
             (transaction) => TransactionModel.fromJson(transaction),
+          ),
+        ).toList();
+
+        return transactions;
+      }
+
+      throw jsonDecode(res.body)['message'];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<AsingTransactionModel>> getTransactionsAsing() async {
+    try {
+      final token = await AuthService().getToken();
+
+      final res = await http.get(
+        Uri.parse('$baseUrl/international_transactions'),
+        headers: {
+          'Authorization': token,
+        },
+      );
+
+      print(res.body);
+
+      if (res.statusCode == 200) {
+        List<AsingTransactionModel> transactions =
+            List<AsingTransactionModel>.from(
+          jsonDecode(res.body)['data'].map(
+            (transaction) => AsingTransactionModel.fromJson(transaction),
           ),
         ).toList();
 

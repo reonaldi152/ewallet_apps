@@ -1,16 +1,17 @@
+import 'package:ewallet_apps/models/transaction_model%20copy.dart';
 import 'package:ewallet_apps/models/transaction_model.dart';
 import 'package:ewallet_apps/shared/helpers.dart';
 import 'package:ewallet_apps/shared/theme.dart';
 import 'package:flutter/material.dart';
 
-class HomeLatestTransactionItem extends StatelessWidget {
-  final TransactionModel transaction;
+class HomeLatestTransactionItemAsing extends StatelessWidget {
+  final AsingTransactionModel transaction;
   // final String iconUrl;
   // final String title;
   // final String time;
   // final String value;
 
-  const HomeLatestTransactionItem({
+  const HomeLatestTransactionItemAsing({
     Key? key,
     // required this.iconUrl,
     // required this.title,
@@ -63,12 +64,26 @@ class HomeLatestTransactionItem extends StatelessWidget {
                 const SizedBox(
                   height: 2,
                 ),
+                Text(
+                  transaction.currency,
+                  style: greyTextStyle.copyWith(
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  transaction.description,
+                  style: greyTextStyle.copyWith(
+                    fontSize: 12,
+                  ),
+                )
               ],
             ),
           ),
           Text(
-            (transaction.transactionType?.action == 'cr' ? '+ ' : '- ') +
-                formatTransactionCurrency(num.parse(transaction.amount!)),
+            transaction.amount.toString(),
             // value,
             style: blackTextStyle.copyWith(
               fontSize: 16,

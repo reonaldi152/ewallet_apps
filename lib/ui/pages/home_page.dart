@@ -7,6 +7,8 @@ import 'package:ewallet_apps/shared/helpers.dart';
 import 'package:ewallet_apps/shared/theme.dart';
 import 'package:ewallet_apps/ui/pages/barcode_page.dart';
 import 'package:ewallet_apps/ui/pages/converter_page.dart';
+import 'package:ewallet_apps/ui/pages/history_pembayaran_asing.dart';
+import 'package:ewallet_apps/ui/pages/history_pembayaran_page.dart';
 import 'package:ewallet_apps/ui/pages/lihat_saldo_page.dart';
 import 'package:ewallet_apps/ui/pages/money_changer_home.dart';
 import 'package:ewallet_apps/ui/pages/money_changer_page.dart';
@@ -51,7 +53,7 @@ class _HomePageState extends State<HomePage> {
     if (index == 0) {
       Navigator.pushNamed(context, '/home');
     } else if (index == 1) {
-      Navigator.pushNamed(context, '/historyPayment');
+      _dialogHistori();
     }
   }
 
@@ -118,6 +120,59 @@ class _HomePageState extends State<HomePage> {
                               ));
                         },
                         child: const Text("barcode")),
+                  ),
+                  // ),
+                ],
+              ),
+            ],
+          );
+        });
+  }
+
+  void _dialogHistori() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            title: Text("Histori"),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HistoryPembayaranAsing(),
+                            ));
+                      },
+                      child: Text('Asing'),
+                    ),
+                  ),
+
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(purpleColor),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HistoryPembayaran(),
+                              ));
+                        },
+                        child: const Text("Rupiah")),
                   ),
                   // ),
                 ],
@@ -339,7 +394,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    WithdrawPage(balance: balanceKu ?? balance),
+                                    WithdrawPage(balance: balance),
                               ));
                         },
                         child: const Text("Rupiah")),
@@ -404,14 +459,14 @@ class _HomePageState extends State<HomePage> {
                   width: 20,
                   color: blueColor,
                 ),
-                label: 'Overview',
+                label: 'Beranda',
               ),
               BottomNavigationBarItem(
                 icon: Image.asset(
                   'assets/ic_history.png',
                   width: 20,
                 ),
-                label: 'History',
+                label: 'Histori',
               ),
             ],
           ),
@@ -652,8 +707,7 @@ class _HomePageState extends State<HomePage> {
                         //   ),
                         // ),
                         Text(
-                          formatCurrency(num.parse(balanceKu ?? balance))
-                              .toString(),
+                          formatCurrency(num.parse(balance)).toString(),
                           style: whiteTextStyle.copyWith(
                             fontSize: 24,
                             fontWeight: semiBold,
@@ -776,7 +830,7 @@ class _HomePageState extends State<HomePage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => MoneyChangerPage(
-                              balance: balanceKu,
+                              balance: balance,
                             )),
                   );
                 },

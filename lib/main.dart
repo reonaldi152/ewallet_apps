@@ -7,6 +7,7 @@ import 'package:ewallet_apps/ui/pages/barcode_page.dart';
 import 'package:ewallet_apps/ui/pages/data_package_page.dart';
 import 'package:ewallet_apps/ui/pages/data_provider_page.dart';
 import 'package:ewallet_apps/ui/pages/data_success_page.dart';
+import 'package:ewallet_apps/ui/pages/history_pembayaran_asing.dart';
 import 'package:ewallet_apps/ui/pages/history_pembayaran_page.dart';
 import 'package:ewallet_apps/ui/pages/home_page.dart';
 import 'package:ewallet_apps/ui/pages/onboarding_page.dart';
@@ -111,7 +112,8 @@ class MyApp extends StatelessWidget {
           '/transfer-success': (context) => const TransferSuccessPage(),
           '/data-provider': (context) => const DataProviderPage(),
           '/data-success': (context) => const DataSuccessPage(),
-          '/historyPayment': (context) => const HistoryPembayaran(),
+          // '/historyPayment': (context) => const HistoryPembayaran(),
+          '/historyPayment': (context) => const HistoryPembayaranAsing(),
           '/barcode': (context) => const BarcodePage(),
         },
       ),
