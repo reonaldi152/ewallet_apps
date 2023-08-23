@@ -34,96 +34,102 @@ class _LihatSaldoPageState extends State<LihatSaldoPage> {
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                if (state is AuthSuccess) {
-                  return Row(
-                    children: [
-                      Image.asset(
-                        'assets/img_wallet.png',
-                        width: 80,
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            state.data.cardNumber!.replaceAllMapped(
-                                RegExp(r".{4}"),
-                                (match) => "${match.group(0)} "),
-                            style: blackTextStyle.copyWith(
-                              fontSize: 16,
-                              fontWeight: medium,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            state.data.name!,
-                            style: blackTextStyle.copyWith(
-                              fontSize: 16,
-                              fontWeight: semiBold,
-                            ),
-                          ),
-                          Text(
-                            formatCurrency(num.parse(state.data.balance))
-                                .toString(),
-                            style: blackTextStyle.copyWith(
-                              fontSize: 16,
-                              fontWeight: semiBold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                }
-                return Container();
-              },
-            ),
-            (code != null)
-                ? Container(
-                    margin: EdgeInsets.only(bottom: 20, top: 20),
-                    child: Text(
-                      "Saldo mata uang asing",
-                      style: blackTextStyle.copyWith(
-                        fontSize: 16,
-                        fontWeight: semiBold,
-                      ),
-                    ))
-                : SizedBox(),
-            (code != null)
-                ? ListView.builder(
-                    physics: ScrollPhysics(),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: code?.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                                color: Color.fromARGB(255, 160, 166, 247))),
-                        padding: EdgeInsets.only(left: 8),
-                        child: ListTile(
-                          title: Text(code?[index]),
-                          subtitle:
-                              Text(valuesHistory![index]['amount'].toString()),
-                          trailing: Text(valuesHistory![index]['currency_code']
-                              .toString()),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if (state is AuthSuccess) {
+                    return Row(
+                      children: [
+                        Image.asset(
+                          'assets/img_wallet.png',
+                          width: 80,
                         ),
-                      );
-                    },
-                  )
-                : SizedBox()
-          ],
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              state.data.cardNumber!.replaceAllMapped(
+                                  RegExp(r".{4}"),
+                                  (match) => "${match.group(0)} "),
+                              style: blackTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: medium,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              state.data.name!,
+                              style: blackTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: semiBold,
+                              ),
+                            ),
+                            Text(
+                              formatCurrency(num.parse(state.data.balance))
+                                  .toString(),
+                              style: blackTextStyle.copyWith(
+                                fontSize: 16,
+                                fontWeight: semiBold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                  return Container();
+                },
+              ),
+              (code != null)
+                  ? Container(
+                      margin: EdgeInsets.only(bottom: 20, top: 20),
+                      child: Text(
+                        "Saldo mata uang asing",
+                        style: blackTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: semiBold,
+                        ),
+                      ))
+                  : SizedBox(),
+              (code != null)
+                  ? ListView.builder(
+                      physics: ScrollPhysics(),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: code?.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.only(bottom: 15),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  color: Color.fromARGB(255, 160, 166, 247))),
+                          padding: EdgeInsets.only(left: 8),
+                          child: ListTile(
+                            title: Text(code?[index]),
+                            subtitle: Text(
+                                valuesHistory![index]['amount'].toString()),
+                            trailing: Text(valuesHistory![index]
+                                    ['currency_code']
+                                .toString()),
+                          ),
+                        );
+                      },
+                    )
+                  : SizedBox(),
+              SizedBox(
+                height: 32,
+              ),
+            ],
+          ),
         ),
       ),
     );

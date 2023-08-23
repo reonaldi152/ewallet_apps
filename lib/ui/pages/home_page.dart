@@ -106,10 +106,10 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 120,
                     child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(purpleColor),
-                        ),
+                        // style: ButtonStyle(
+                        //   backgroundColor:
+                        //       MaterialStatePropertyAll(purpleColor),
+                        // ),
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -160,10 +160,6 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 120,
                     child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(purpleColor),
-                        ),
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.push(

@@ -132,7 +132,7 @@ class _TransferPageState extends State<TransferPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Recent Users',
+            'Pengguna Terkini',
             style: blackTextStyle.copyWith(
               fontSize: 16,
               fontWeight: semiBold,

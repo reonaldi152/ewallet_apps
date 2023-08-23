@@ -2,14 +2,15 @@ class TransactionModel {
   final dynamic id;
   final dynamic amount;
   final String? createdAt;
+  final dynamic description;
   final TransactionTypeModel? transactionType;
 
-  TransactionModel({
-    this.id,
-    this.amount,
-    this.createdAt,
-    this.transactionType,
-  });
+  TransactionModel(
+      {this.id,
+      this.amount,
+      this.createdAt,
+      this.transactionType,
+      this.description});
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>
       TransactionModel(

@@ -63,6 +63,12 @@ class HomeLatestTransactionItem extends StatelessWidget {
                 const SizedBox(
                   height: 2,
                 ),
+                Text(
+                  transaction.description,
+                  style: greyTextStyle.copyWith(
+                    fontSize: 12,
+                  ),
+                )
               ],
             ),
           ),
