@@ -16,6 +16,7 @@ class TransactionModel {
       TransactionModel(
         id: json['id'],
         amount: json['amount'],
+        description: json['description'],
         createdAt: json['created_at'],
         transactionType: json['transaction_type'] == null
             ? null
